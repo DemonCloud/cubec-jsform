@@ -1,0 +1,25 @@
+{
+  "name": "cubec-jsfrom",
+  "type": "SPA",
+  "wap": true,
+  "path": {
+    "output": "dist/",
+    "public": "/"
+  },
+  "alias": {
+    "JSFORM": "src/jsform"
+  },
+  "define": {
+  },
+  "provide": {
+  },
+  "mockServer":{
+    "debug": true
+  },
+  "devServer": {
+    "port": 9001,
+    "https": false,
+    "proxy": {}
+  }
+}
+
