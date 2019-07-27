@@ -163,7 +163,7 @@ class JsForm {
     // triggerRender
     core.triggerRender();
 
-    events.emit(EVENTS.RESET, merge({},core.defaultData));
+    events.emit(EVENTS.RESET, extend({},core.defaultData));
 
     return this;
   }

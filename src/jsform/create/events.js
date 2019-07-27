@@ -34,9 +34,7 @@ const createEvents = function(config){
     }
   });
 
-  each(config.events, (fn, event)=>{
-    Events.on(event, fn);
-  });
+  each(config.events, (fn, event)=>Events.on(event, fn));
 
   delete config.events;
 

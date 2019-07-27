@@ -3,7 +3,7 @@ const checkPluginConfig = function(plugin){
 
   if(!plugin){
     checker = false;
-    console.error("[JSFORM] [plugin register error] invalid plugin option "+plugin);
+    console.error("[JSFORM] [plugin register error] invalid plugin option " + plugin);
   }
 
   if(!plugin.type){

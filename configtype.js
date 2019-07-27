@@ -9,7 +9,7 @@
 // 主动方法
 // jsform.submit()
 // jsform.getData(name)
-// jsform.setDate(name,value)
+// jsform.setData(name,value)
 // jsform.validate(name)
 // jsform.destory()
 // jsform.emit()
@@ -29,6 +29,8 @@
 // jsform.name
 // jsform.root
 
+// var myjsform = new JsForm(root, formconfig);
+
 const formconfig = {
   // 表单ID [必须]
   id: "jsform",
@@ -37,7 +39,7 @@ const formconfig = {
   name: "jsform-example",
 
   // 表单提交的地址
-  url: "https://psh.natappvip.cc/postformdata.do",
+  url: "/postformdata.do",
 
   // 提交数据格式
   emulateJSON: true,

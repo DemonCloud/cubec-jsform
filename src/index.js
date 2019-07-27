@@ -5,7 +5,9 @@ import "./_plugins/input";
 import "./_plugins/radio";
 import "./_plugins/textarea";
 import "./_plugins/input-group";
-import "./_plugins/label-line.js";
+import "./_plugins/label-line";
+import "./_plugins/react-input";
+// import "./_plugins/vue-input";
 import cubec from 'cubec';
 
 import part1 from './form/part1';

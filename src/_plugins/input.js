@@ -68,8 +68,8 @@ JsForm.registerPlugin({
   },
 
   events: {
-    invalid: function(value, formData, errmsg){
-      console.log("input", this.name, value, formData);
-    }
+    // invalid: function(value, formData, errmsg){
+    //   console.log("input", this.name, value);
+    // }
   }
 });

@@ -19,8 +19,11 @@ const part1View = cubec.view({
 
         this.jsform = new JsForm(this.refs.form, {
           id: "form-part-1",
+
           name: "A_form_part1",
-          store: true,
+
+          // store: true,
+
           events: {
             onSubmit(data){
               console.log(data);
@@ -68,6 +71,7 @@ const part1View = cubec.view({
               type: "input",
               name: "phone",
               className: "form-part-itemwrap phone",
+              //validate: [/^((0\d{2,3}-\d{7,8})|(1[3456789]\d{9}))$/, "电话格式不正确"],
               required: true,
               config: {
                 label: "电话号码",

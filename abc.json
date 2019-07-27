@@ -17,7 +17,7 @@
     "debug": true
   },
   "devServer": {
-    "port": 9001,
+    "port": 9006,
     "https": false,
     "proxy": {}
   }
