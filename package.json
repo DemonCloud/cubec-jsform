@@ -10,7 +10,7 @@
   "author": "YiJun",
   "license": "Apache License 2.0",
   "dependencies": {
-    "cubec": "^1.6.0"
+    "cubec": "^1.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

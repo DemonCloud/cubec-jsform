@@ -21,6 +21,7 @@ const defined = struct.define();
 const each = struct.each();
 const merge = struct.merge();
 const extend = struct.extend();
+const eq = struct.eq();
 
 const requestModel = cubec.model.extend({});
 
@@ -180,6 +181,30 @@ class JsForm {
     events.emit.apply(events, arguments);
 
     return this;
+  }
+
+  updatePlugin(options={}){
+    const core = this._core(identify);
+    const pluginScope = core.scope[options.name];
+
+    if(pluginScope){
+      let updateFlag = false;
+      const value = options.value;
+      const copyConfig = (options.config != null && isObject(options.config)) ?
+        extend({}, options.config) : pluginScope.config;
+
+      if(!eq(pluginScope.config, copyConfig)){
+        updateFlag = true;
+        pluginScope.config = copyConfig;
+      }
+
+      if(value != null && !eq(pluginScope.value, value)){
+        updateFlag = false;
+        core.formData.set(options.name, pluginScope.value = value);
+      }
+
+      if(updateFlag) core.formData.emit(`change:${options.name}`, [value]);
+    }
   }
 
   submit(){

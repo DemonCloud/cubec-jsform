@@ -17,6 +17,8 @@ import part4 from './form/part4';
 import part5 from './form/part5';
 import part6 from './form/part6';
 
+window.p1 = part1;
+
 const App = cubec.view({
   forms: {
     part1,

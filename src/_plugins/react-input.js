@@ -28,6 +28,10 @@ JsForm.registerPlugin({
 
   description: "react-input 组件",
 
+  init(){
+    this.count = 0;
+  },
+
   render(errmsg){
     const scope = this;
 
@@ -36,7 +40,7 @@ JsForm.registerPlugin({
          name={scope.name}
          config={scope.config}
          isReuqired={!!scope.required}
-         value={scope.value}
+         value={scope.value != null ? scope.value : ""}
          scope={scope}
          errmsg={errmsg}
       />,
@@ -44,9 +48,4 @@ JsForm.registerPlugin({
     );
   },
 
-  events: {
-    // invalid: function(value, formData, errmsg){
-    //   console.log("input", this.name, value);
-    // }
-  }
 });

@@ -30,13 +30,14 @@ const createCore = function(jsform, JsFormPlugins){
       if(plugin.validate)
         validate[plugin.name] = plugin.validate;
 
-      if(!plugin.config)
-        defined(createscope, "config", {
-          value: identify,
-          writable: false,
-          enumerable: false,
-          configurable: false,
-        });
+      defined(createscope, "config", {
+        value: (plugin.config!=null && isObject(plugin.config)) ? plugin.config : {},
+        writable: true,
+        enumerable: false,
+        configurable: false,
+      });
+
+      delete plugin.config;
 
       defined(createscope, "customRoot", {
         value: isDom(plugin.root),
@@ -60,6 +61,7 @@ const createCore = function(jsform, JsFormPlugins){
         enumerable: false,
         configurable: false,
       });
+
 
       if(plugin.className)
         createscope.root.className = plugin.className;

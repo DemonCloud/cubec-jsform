@@ -57,7 +57,6 @@ JsForm.registerPlugin({
 
   render(errmsg){
     const scope = this;
-
     scope._view.render({
       value: scope.value,
       name: scope.name,

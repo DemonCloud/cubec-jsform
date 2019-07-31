@@ -24,16 +24,12 @@ const part1View = cubec.view({
 
           // store: true,
 
-          events: {
-            onSubmit(data){
-              console.log(data);
-            }
-          },
           plugins: [
             {
-              type: "input",
+              type: "react-input",
               name: "name",
               className: "form-part-itemwrap name",
+              defaultValue: "ABC",
               required: true,
               config: {
                 label: "姓名",
@@ -42,11 +38,12 @@ const part1View = cubec.view({
             },
 
             {
-              type: "input",
+              type: "react-input",
               name: "prename",
               className: "form-part-itemwrap prevname",
               required: true,
               config: {
+                relative: "name",
                 label: "曾用名",
                 placeholder: "请填写曾用名",
               }
@@ -68,12 +65,13 @@ const part1View = cubec.view({
             },
 
             {
-              type: "input",
+              type: "react-input",
               name: "phone",
               className: "form-part-itemwrap phone",
-              //validate: [/^((0\d{2,3}-\d{7,8})|(1[3456789]\d{9}))$/, "电话格式不正确"],
+              validate: [/^((0\d{2,3}-\d{7,8})|(1[3456789]\d{9}))$/, "电话格式不正确"],
               required: true,
               config: {
+                abc: 123,
                 label: "电话号码",
                 type: "phone",
                 placeholder: "请填写联系电话",

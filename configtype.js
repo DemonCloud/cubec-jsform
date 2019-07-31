@@ -148,6 +148,11 @@ const plugin = {
   // 可选函数
   events: {
     invalid(){
+      
+    },
+
+    destory(){
+
     },
 
     onSubmit(){
