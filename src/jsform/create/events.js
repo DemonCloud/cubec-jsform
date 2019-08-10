@@ -1,7 +1,7 @@
 import cubec from 'cubec';
+import struct from 'ax-struct-js';
 import EVENTS from '../define/eventNamespace';
 
-const struct = cubec.struct;
 const each = struct.each();
 const extend = struct.extend();
 

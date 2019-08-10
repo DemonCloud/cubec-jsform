@@ -1,6 +1,5 @@
-import cubec from 'cubec';
+import struct from 'ax-struct-js';
 
-const struct = cubec.struct;
 const isString = struct.type("string");
 const isArray = struct.type("array");
 const each = struct.each();

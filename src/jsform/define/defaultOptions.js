@@ -1,6 +1,4 @@
-import cubec from 'cubec';
-
-const struct = cubec.struct;
+import struct from 'ax-struct-js';
 
 const defaultJsFormOptions = {
   emulateJSON: true,

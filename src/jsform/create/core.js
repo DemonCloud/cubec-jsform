@@ -1,6 +1,5 @@
-import cubec from 'cubec';
+import struct from 'ax-struct-js';
 
-const struct = cubec.struct;
 const isObject = struct.type("object");
 const isFunction = struct.type("func");
 const isDom = struct.type("dom");
@@ -20,6 +19,7 @@ const createCore = function(jsform, JsFormPlugins){
   each(config.plugins, function(plugin){
     if(plugin && isObject(plugin) && size(plugin) > 2){
       let createscope = scope[plugin.name] = {};
+      let createscope_handler = [];
 
       if(plugin.defaultValue)
         defaultData[plugin.name] = plugin.defaultValue;
@@ -62,7 +62,6 @@ const createCore = function(jsform, JsFormPlugins){
         configurable: false,
       });
 
-
       if(plugin.className)
         createscope.root.className = plugin.className;
 
@@ -74,17 +73,34 @@ const createCore = function(jsform, JsFormPlugins){
 
       if(isFunction(createscope.self.events.invalid))
         events.on(`invalid:${plugin.name}`, createscope.self.events.invalid.bind(createscope));
+      if(isFunction(createscope.self.events.update))
+        events.on(`update:${plugin.name}`, createscope.self.events.update.bind(createscope));
 
       createscope.value = plugin.defaultValue;
-      createscope.setValue = function(value, isStatic){
-        core.formData.set(plugin.name, value, isStatic);
+      createscope.setValue = function(value, isStatic){ core.formData.set(plugin.name, value, isStatic); };
+      createscope.triggerSubmit = function(){ jsform.submit.apply(jsform, arguments); };
+      createscope.triggerReset = function(){ jsform.reset.apply(jsform, arguments); };
+      createscope.subscribe = function(name, handler){
+        if(name && name !== createscope.name){
+          core.formData.on(`change:${name}`, handler);
+          createscope_handler.push(handler);
+        }
       };
-      createscope.triggerSubmit = ()=>jsform.submit.apply(jsform, arguments);
-      createscope.triggerReset = ()=>jsform.reset.apply(jsform, arguments);
-      createscope.getFormData = function(){
-        return jsform.getData.apply(jsform, arguments);
+      createscope.unsubscribe = function(name, handler){
+        if(name && name !== createscope.name){
+          if(isFunction(handler)){
+            core.formData.off(`change:${name}`, handler);
+          }else if(handler == null){
+            let fn = createscope_handler.pop();
+            while(fn){
+              core.formData.off(`change:${name}`, fn);
+              fn = createscope_handler.pop();
+            }
+          }
+        }
       };
-
+      createscope.forceRender = function(errmsg){ createscope.self.render.call(createscope, errmsg); };
+      createscope.getFormData = function(){ return jsform.getData.apply(jsform, arguments); };
     }
   });
 

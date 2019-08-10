@@ -1,8 +1,8 @@
 {
   "name": "cubec-jsform",
   "version": "0.0.1",
-  "description": "",
-  "main": "src/jsform/jsform.js",
+  "description": "Cubec Series Components - JsForm",
+  "main": "src/jsform/index.js",
   "repository": "https://github.com/DemonCloud/cubec-jsform.git",
   "scripts": {
     "build": "node rollup.config.js"
@@ -10,7 +10,8 @@
   "author": "YiJun",
   "license": "Apache License 2.0",
   "dependencies": {
-    "cubec": "^1.6.1"
+    "ax-struct-js": "^5.0.0",
+    "cubec": "^1.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

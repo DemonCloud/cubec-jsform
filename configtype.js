@@ -9,6 +9,8 @@
 // 主动方法
 // jsform.submit()
 // jsform.getData(name)
+// jsform.getPlugin(name)
+// jsform.updatePlugin(name, { config, value })
 // jsform.setData(name,value)
 // jsform.validate(name)
 // jsform.destory()
@@ -136,8 +138,9 @@ const plugin = {
     // this.root 挂在的dom节点
     // this.setValue() 设置数值
     // this.triggerSubmit() 主动提交
-    // this.triggerReset() 主动提交
+    // this.triggerReset() 主动重置表单
     // this.getFormData() 获取当前form的所有数据
+    // this.forceRender(errmsg) 重新渲染当前组件
     // this.name 获取当前控件的名称
     // this.config 获取当前控件的配置
     // this.className 获取当前控件的className
@@ -147,8 +150,12 @@ const plugin = {
 
   // 可选函数
   events: {
+    update(newConfig){
+
+    },
+
     invalid(){
-      
+
     },
 
     destory(){
@@ -160,6 +167,7 @@ const plugin = {
     },
 
     onDestory(){
+
     }
   }
 };

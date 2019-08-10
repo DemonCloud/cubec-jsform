@@ -33,6 +33,7 @@ JsForm.registerPlugin({
   },
 
   render(errmsg){
+    console.log(errmsg);
     const scope = this;
 
     ReactDOM.render(

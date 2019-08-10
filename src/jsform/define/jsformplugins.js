@@ -1,7 +1,7 @@
 import cubec from 'cubec';
+import struct from 'ax-struct-js';
 import checkPluginConfig from '../checker/pluginConfig';
 
-const struct = cubec.struct;
 const each = struct.each();
 const noop = struct.noop();
 const merge = struct.merge();

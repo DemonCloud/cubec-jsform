@@ -1,4 +1,5 @@
 import cubec from 'cubec';
+import struct from 'ax-struct-js';
 import initConfigChecker from './checker/initConfig';
 
 import createCore from './create/core';
@@ -10,16 +11,17 @@ import defaultJsFormOptions from './define/defaultOptions';
 import JsFormPlugins from './define/jsformplugins';
 import EVENTS from './define/eventNamespace';
 
-const struct = cubec.struct;
 const identify = struct.broken;
 const isDom = struct.type("dom");
 const isObject = struct.type("object");
 const isString = struct.type("string");
 const isFunction = struct.type("func");
+const isArrayLike = struct.type('arraylike');
 const v8 = struct.v8();
 const defined = struct.define();
 const each = struct.each();
 const merge = struct.merge();
+const map = struct.map();
 const extend = struct.extend();
 const eq = struct.eq();
 
@@ -183,9 +185,10 @@ class JsForm {
     return this;
   }
 
-  updatePlugin(options={}){
+  updatePlugin(name, options={}){
     const core = this._core(identify);
-    const pluginScope = core.scope[options.name];
+    const events = this._events(identify);
+    const pluginScope = core.scope[name];
 
     if(pluginScope){
       let updateFlag = false;
@@ -200,11 +203,32 @@ class JsForm {
 
       if(value != null && !eq(pluginScope.value, value)){
         updateFlag = false;
-        core.formData.set(options.name, pluginScope.value = value);
+        core.formData.set(name, pluginScope.value = value);
       }
 
-      if(updateFlag) core.formData.emit(`change:${options.name}`, [value]);
+      if(updateFlag){
+        core.formData.emit(`change:${name}`, [value]);
+        events.emit(`update:${name}`, [copyConfig]);
+      }
+
     }
+  }
+
+  getPlugin(name){
+    let plugin = null;
+    const core = this._core(identify);
+    const pluginScope = core.scope[name];
+
+    if(pluginScope){
+      plugin = extend({}, pluginScope.self, ["init", "events"]);
+      plugin = map(plugin, function(prop){
+        if(isFunction(prop))
+          return prop.bind(pluginScope);
+        return prop;
+      });
+    }
+
+    return plugin;
   }
 
   submit(){
@@ -253,6 +277,7 @@ class JsForm {
     this._root.innerHTML = "";
   }
 
+  // event hooks
   onSubmit(fn){
     const events = this._events(identify);
     events.on(EVENTS.SUBMIT, fn);
@@ -305,9 +330,9 @@ class JsForm {
   }
 }
 
-JsForm.cubec = cubec;
 JsForm.getPluginList = ()=> JsFormPlugins.getPluginList();
 JsForm.registerPlugin = plugin => JsFormPlugins.registerPlugin(plugin);
+JsForm.collect = (use, connect=false) => cubec.atom({ use: isString(use) ? [use] : (isArrayLike(use) ? use : []), connect });
 
 JsForm.verison = "0.0.1";
 

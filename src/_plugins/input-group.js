@@ -1,4 +1,5 @@
-import cubec, {struct} from 'cubec';
+import cubec from 'cubec';
+import struct from 'ax-struct-js';
 import JsForm from 'JSFORM/jsform';
 
 const each = struct.each();

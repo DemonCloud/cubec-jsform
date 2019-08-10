@@ -7,7 +7,7 @@
     "public": "/"
   },
   "alias": {
-    "JSFORM": "src/jsform"
+    "JSFORM": "src"
   },
   "define": {
   },

@@ -7,7 +7,7 @@ const babel = require('rollup-plugin-babel');
 const optimizeJs = require('rollup-plugin-optimize-js');
 
 const path = require('path');
-const inputfile = path.resolve('./') + '/src/jsform/jsform.js';
+const inputfile = path.resolve('./') + '/src/jsform/index.js';
 const outputfile = path.resolve('./') + '/dist/jsform.min.js';
 
 // 定义plugin
