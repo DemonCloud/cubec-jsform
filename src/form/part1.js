@@ -1,5 +1,8 @@
 import cubec from 'cubec';
+import struct from 'ax-struct-js';
 import JsForm from 'JSFORM/jsform';
+
+const _ajax = struct.ajax();
 
 const part1View = cubec.view({
   name: "aucan-form-A-part1",
@@ -17,19 +20,49 @@ const part1View = cubec.view({
       if(!this.refs.form.init){
         this.refs.form.init = true;
 
-        this.jsform = new JsForm(this.refs.form, {
+        window.p1 = this.jsform = new JsForm(this.refs.form, {
           id: "form-part-1",
 
           name: "A_form_part1",
 
           store: true,
 
+          events: {
+            onSubmit(data){
+              console.log(data);
+
+              _ajax({
+                type: "POST",
+
+                url: "/api/form/submit",
+
+                param: {
+                  name: data.name,
+                  email: data.email,
+                  phone: data.phone,
+                  formType: 1,
+                  userId: 1,
+                  formContent: JSON.stringify(data)
+                },
+
+                header: {
+                  "Content-Type": "application/json"
+                },
+
+                success(res){
+                  console.log(res);
+                }
+
+              });
+            }
+          },
+
           plugins: [
             {
               type: "react-input",
               name: "name",
               className: "form-part-itemwrap name",
-              defaultValue: "ABC",
+              // defaultValue: "ABC",
               required: true,
               config: {
                 label: "姓名",
@@ -43,7 +76,6 @@ const part1View = cubec.view({
               className: "form-part-itemwrap prevname",
               required: true,
               config: {
-                relative: "name",
                 label: "曾用名",
                 placeholder: "请填写曾用名",
               }

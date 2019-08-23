@@ -13,7 +13,7 @@
 // jsform.updatePlugin(name, { config, value })
 // jsform.setData(name,value)
 // jsform.validate(name)
-// jsform.destory()
+// jsform.destroy()
 // jsform.emit()
 // jsform.reset()
 
@@ -25,7 +25,7 @@
 // jsform.onSyncError(fn)
 // jsform.onUpdate(fn)
 // jsform.onReset(fn)
-// jsform.onDestory(fn)
+// jsform.onDestroy(fn)
 
 // 静态属性
 // jsform.name
@@ -90,7 +90,7 @@ const formconfig = {
     },
 
     // 当表单生命周期结束，被销毁时
-    onDestory(data){
+    onDestroy(data){
 
     }
   },
@@ -158,7 +158,7 @@ const plugin = {
 
     },
 
-    destory(){
+    destroy(){
 
     },
 
@@ -166,7 +166,7 @@ const plugin = {
 
     },
 
-    onDestory(){
+    onDestroy(){
 
     }
   }

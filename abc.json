@@ -13,13 +13,19 @@
   },
   "provide": {
   },
-  "mockServer":{
-    "debug": true
-  },
   "devServer": {
     "port": 9006,
     "https": false,
-    "proxy": {}
+    "proxy": {
+      "/api": {
+        "target": "https://96707d8c.ngrok.io",
+        "changeOrigin": true,
+        "secure": false
+      }
+    }
+  },
+  "mockServer":{
+    "debug": true
   }
 }
 

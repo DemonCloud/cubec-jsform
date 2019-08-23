@@ -268,11 +268,12 @@ class JsForm {
     return this;
   }
 
-  destory(){
+  destroy(){
     const core = this._core(identify);
     const events = this._events(identify);
 
-    events.emit(EVENTS.DESTORY, core.formData.get());
+    events.emit(EVENTS.DESTROY, core.formData.get());
+    events.off();
 
     this._root.innerHTML = "";
   }
@@ -314,9 +315,9 @@ class JsForm {
     return this;
   }
 
-  onDestory(fn){
+  onDestroy(fn){
     const events = this._events(identify);
-    events.on(EVENTS.DESTORY, fn);
+    events.on(EVENTS.DESTROY, fn);
     return this;
   }
 
@@ -334,6 +335,6 @@ JsForm.getPluginList = ()=> JsFormPlugins.getPluginList();
 JsForm.registerPlugin = plugin => JsFormPlugins.registerPlugin(plugin);
 JsForm.collect = (use, connect=false) => cubec.atom({ use: isString(use) ? [use] : (isArrayLike(use) ? use : []), connect });
 
-JsForm.verison = "0.0.1";
+JsForm.verison = "0.0.2";
 
 export default JsForm;

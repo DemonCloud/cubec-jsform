@@ -75,6 +75,8 @@ const createCore = function(jsform, JsFormPlugins){
         events.on(`invalid:${plugin.name}`, createscope.self.events.invalid.bind(createscope));
       if(isFunction(createscope.self.events.update))
         events.on(`update:${plugin.name}`, createscope.self.events.update.bind(createscope));
+      if(isFunction(createscope.self.events.destroy))
+         events.on("onDestroy", createscope.self.events.destroy.bind(createscope));
 
       createscope.value = plugin.defaultValue;
       createscope.setValue = function(value, isStatic){ core.formData.set(plugin.name, value, isStatic); };

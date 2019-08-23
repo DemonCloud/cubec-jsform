@@ -223,3 +223,18 @@ ct {
   }
 
 }
+
+
+.form-submit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .form-submit-button{
+    background-color: #ccc;
+    color: #000;
+    font-size: 32px;
+    padding: 7px 12px;
+  }
+}

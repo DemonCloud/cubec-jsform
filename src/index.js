@@ -29,10 +29,20 @@ const App = cubec.view({
     part6
   },
 
+  events: {
+    "click:#submit": function(){
+      part1.jsform.submit();
+    }
+  },
+
   template: `
     <div class="form-logo">
       <img src="https://s2.ax1x.com/2019/07/06/Z0st3R.png" alt="aucan" class="form-logo_img" />
       <h3 class="form-logo_title">美国签证申请表</h3>
+    </div>
+
+    <div class="form-submit">
+      <button class="form-submit-button" id="submit">提交表单</button>
     </div>
 
     <slot>forms.part1</slot>
@@ -41,10 +51,6 @@ const App = cubec.view({
     <slot>forms.part4</slot>
     <slot>forms.part5</slot>
     <slot>forms.part6</slot>
-
-    <div class="form-submit">
-      <button class="form-submit-button" id="submit">提交表单</button>
-    </div>
   `
 });
 

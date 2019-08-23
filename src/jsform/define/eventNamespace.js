@@ -13,7 +13,7 @@ const EVENTS = {
 
   UPDATE: "onUpdate",
 
-  DESTORY: "onDestory",
+  DESTROY: "onDestroy",
 
   RESET: "onReset",
 };
