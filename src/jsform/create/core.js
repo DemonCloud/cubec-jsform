@@ -75,8 +75,6 @@ const createCore = function(jsform, JsFormPlugins){
         events.on(`invalid:${plugin.name}`, createscope.self.events.invalid.bind(createscope));
       if(isFunction(createscope.self.events.update))
         events.on(`update:${plugin.name}`, createscope.self.events.update.bind(createscope));
-      if(isFunction(createscope.self.events.destroy))
-         events.on("onDestroy", createscope.self.events.destroy.bind(createscope));
 
       createscope.value = plugin.defaultValue;
       createscope.setValue = function(value, isStatic){ core.formData.set(plugin.name, value, isStatic); };
@@ -101,14 +99,15 @@ const createCore = function(jsform, JsFormPlugins){
           }
         }
       };
-      createscope.forceRender = function(errmsg){ createscope.self.render.call(createscope, errmsg); };
-      createscope.getFormData = function(){ return jsform.getData.apply(jsform, arguments); };
+      createscope.forceRender = function(errmsg){ createscope.__destory = createscope.self.render.call(createscope, errmsg); };
+      createscope.getFormData = function(name){ return jsform.getData.apply(jsform, arguments); };
     }
   });
 
   core.triggerRender = function(){
     each(config.plugins, function(plugin){
-      JsFormPlugins.plugins[plugin.type].render.call(core.scope[plugin.name]);
+      const scope = core.scope[plugin.name];
+      scope.__destory = JsFormPlugins.plugins[plugin.type].render.call(scope);
     });
 
     return core.scope;

@@ -129,9 +129,9 @@ class JsForm {
 
       if(errmsg !== true && isString(errmsg)){
         checker = false;
-        scope.self.render.call(scope, errmsg);
+        scope.__destory = scope.self.render.call(scope, errmsg);
       }else if(errmsg === true){
-        scope.self.render.call(scope);
+        scope.__destory = scope.self.render.call(scope);
       }
     }else{
       each(core.validate, function(validation, name){
@@ -140,9 +140,9 @@ class JsForm {
 
         if(errmsg !== true && isString(errmsg)){
           checker = false;
-          scope.self.render.call(scope, errmsg);
+          scope.__destory = scope.self.render.call(scope, errmsg);
         }else if(errmsg === true){
-          scope.self.render.call(scope);
+          scope.__destory = scope.self.render.call(scope);
         }
       });
     }
@@ -272,6 +272,11 @@ class JsForm {
     const core = this._core(identify);
     const events = this._events(identify);
 
+    each(core.scope, function(scope){
+      if(scope.__destory && isFunction(scope.__destory))
+        scope.__destory();
+    });
+
     events.emit(EVENTS.DESTROY, core.formData.get());
     events.off();
 
@@ -335,6 +340,6 @@ JsForm.getPluginList = ()=> JsFormPlugins.getPluginList();
 JsForm.registerPlugin = plugin => JsFormPlugins.registerPlugin(plugin);
 JsForm.collect = (use, connect=false) => cubec.atom({ use: isString(use) ? [use] : (isArrayLike(use) ? use : []), connect });
 
-JsForm.verison = "0.0.2";
+JsForm.verison = "0.0.3";
 
 export default JsForm;

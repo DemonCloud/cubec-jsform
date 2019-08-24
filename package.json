@@ -1,6 +1,6 @@
 {
   "name": "cubec-jsform",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Cubec Series Components - JsForm",
   "main": "src/jsform/index.js",
   "repository": "https://github.com/DemonCloud/cubec-jsform.git",

@@ -22,7 +22,7 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
       if(core.validate[plugin.name]){
         const formData = this.get();
         const errmsg = createValidate(core.validate[plugin.name], value, formData, scope.required);
-        scope.self.render.call(scope, errmsg === true ?  void 0 : errmsg);
+        scope.__destory = scope.self.render.call(scope, errmsg === true ?  void 0 : errmsg);
         if(errmsg) events.emit(`invalid:${plugin.name}`, [value,formData,errmsg]);
       }else{
         scope.self.render.call(scope);
@@ -30,7 +30,7 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
     });
 
     getPlugin.init.call(scope);
-    getPlugin.render.call(scope);
+    scope.__destory = getPlugin.render.call(scope);
 
     if(!scope.customRoot) core.root.appendChild(scope.root);
   });

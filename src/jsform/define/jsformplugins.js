@@ -29,6 +29,7 @@ class JsFormPlugins {
 
   registerPlugin(plugin){
     if(checkPluginConfig(plugin)){
+      // console.log(plugin.type);
       this.plugins[plugin.type] = merge(pluginDefaultOptions, plugin);
     }
   }
