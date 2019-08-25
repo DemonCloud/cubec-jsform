@@ -39,7 +39,7 @@ export default JsForm.registerPlugin({
     scope._view = Input({
       root: scope.root,
       events: {
-        [`input:.form-plugin-${scope.name}`] : function(e){
+        [`${scope.config.type === "date" ? 'change' : 'input'}:.form-plugin-${scope.name}`] : function(e){
           scope.setValue(e.currentTarget.value);
         },
         "click:label": function(e){

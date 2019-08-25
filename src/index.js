@@ -67,33 +67,38 @@ const App = cubec.view({
           },
 
           success(res){
-            console.log(res);
+            if(res.success){
+              alert("表单提交成功");
+              location.reload();
+            }else{
+              alert("表单提交失败");
+            }
           }
         });
+      }else{
+        alert("表单有未填写或未通过校验的字段");
       }
 
     }
   },
 
   template: `
-    <div class="form-logo">
-      <img src="https://s2.ax1x.com/2019/07/06/Z0st3R.png" alt="aucan" class="form-logo_img" />
-      <h3 class="form-logo_title">美国签证申请表</h3>
-    </div>
+    <div class="form">
+      <div class="form-logo">
+        <img src="https://s2.ax1x.com/2019/07/06/Z0st3R.png" alt="aucan" class="form-logo_img" />
+        <h3 class="form-logo_title">美国签证申请表</h3>
+      </div>
 
-    <div class="form-submit">
-      <button class="form-submit-button submit">提交表单</button>
-    </div>
+      <slot>forms.part1</slot>
+      <slot>forms.part2</slot>
+      <slot>forms.part3</slot>
+      <slot>forms.part4</slot>
+      <slot>forms.part5</slot>
+      <slot>forms.part6</slot>
 
-    <slot>forms.part1</slot>
-    <slot>forms.part2</slot>
-    <slot>forms.part3</slot>
-    <slot>forms.part4</slot>
-    <slot>forms.part5</slot>
-    <slot>forms.part6</slot>
-
-    <div class="form-submit">
-      <button class="form-submit-button submit">提交表单</button>
+      <div class="form-submit">
+        <b class="form-submit-button submit">提交表单</b>
+      </div>
     </div>
   `
 });
