@@ -1,6 +1,8 @@
 import cubec from 'cubec';
 import struct from 'ax-struct-js';
 import JsForm from 'JSFORM/jsform';
+import InputPlugin from "../_plugins/input";
+import SelectPlugin from '../_plugins/select';
 
 const _ajax = struct.ajax();
 
@@ -22,56 +24,21 @@ const part1View = cubec.view({
 
         window.p1 = this.jsform = new JsForm(this.refs.form, {
           id: "form-part-1",
-
           name: "A_form_part1",
-
           store: true,
 
-          events: {
-            onSubmit(data){
-              console.log(data);
-
-              _ajax({
-                type: "POST",
-
-                url: "/api/form/submit",
-
-                param: {
-                  name: data.name,
-                  email: data.email,
-                  phone: data.phone,
-                  formType: 1,
-                  userId: 1,
-                  formContent: JSON.stringify(data)
-                },
-
-                header: {
-                  "Content-Type": "application/json"
-                },
-
-                success(res){
-                  console.log(res);
-                }
-
-              });
-            }
-          },
-
           plugins: [
-            {
-              type: "react-input",
+            InputPlugin({
               name: "name",
               className: "form-part-itemwrap name",
-              // defaultValue: "ABC",
               required: true,
               config: {
                 label: "姓名",
                 placeholder: "请填写姓名",
               }
-            },
+            }),
 
-            {
-              type: "react-input",
+            InputPlugin({
               name: "prename",
               className: "form-part-itemwrap prevname",
               required: true,
@@ -79,7 +46,7 @@ const part1View = cubec.view({
                 label: "曾用名",
                 placeholder: "请填写曾用名",
               }
-            },
+            }),
 
             {
               type: "radio",
@@ -96,8 +63,7 @@ const part1View = cubec.view({
               }
             },
 
-            {
-              type: "react-input",
+            InputPlugin({
               name: "phone",
               className: "form-part-itemwrap phone",
               validate: [/^((0\d{2,3}-\d{7,8})|(1[3456789]\d{9}))$/, "电话格式不正确"],
@@ -108,7 +74,7 @@ const part1View = cubec.view({
                 type: "phone",
                 placeholder: "请填写联系电话",
               }
-            },
+            }),
 
             {
               type: "input",
@@ -145,6 +111,22 @@ const part1View = cubec.view({
               }
             },
 
+            SelectPlugin({
+              name: "userId",
+              className: "form-part-itemwrap userId",
+              required: true,
+              config: {
+                label: "中介",
+                url: "/api/user",
+                dataParse(res){
+                  const options = res.content.map((user)=>({
+                    text: user.username,
+                    value: user.id
+                  }));
+                  return options;
+                }
+              }
+            }),
           ]
         });
       }

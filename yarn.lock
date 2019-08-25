@@ -861,10 +861,10 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-cubec@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/cubec/-/cubec-1.7.1.tgz#a786d943e9bd0ca1da6f3bd8ff365e0245aec0b0"
-  integrity sha512-qtoHiTh3desvF4+Dcoj21XuLWW4lK+03jw8WVoSJyV9vnu+xU/4bKJrvo9mvWXfE1Koqbp3CYqZTxx8o5XXqUA==
+cubec@^1.7.4:
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/cubec/-/cubec-1.7.4.tgz#5dbe0d7a56921f4882cdbb5ade1ccd361ca8ac33"
+  integrity sha512-GRS7yfME1ZcmOV/bl5NGCFn+ouuRTjrkNSyCGwqIR1+zyKID+Yk67Kmmftw6YNPBRLFL9zHjmTT2a8gZid3obg==
 
 debug@2.6.9:
   version "2.6.9"
@@ -911,9 +911,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.191:
-  version "1.3.237"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.237.tgz#39c5d1da59d6fd16ff705b97e772bb3b5dfda7e4"
-  integrity sha512-SPAFjDr/7iiVK2kgTluwxela6eaWjjFkS9rO/iYpB/KGXgccUom5YC7OIf19c8m8GGptWxLU0Em8xM64A/N7Fg==
+  version "1.3.238"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.238.tgz#6d6496e393a709b7b186823281d49b1a5d96a6cf"
+  integrity sha512-k+s6EIiSTgfOm7WiMlGBMMMtBQXSui8OfLN1sXU3RohJOuLGVq0lVm7hXyDIDBcbPM0MeZabAdIPQOSEZT3ZLg==
 
 error-ex@^1.2.0:
   version "1.3.2"

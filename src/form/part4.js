@@ -20,11 +20,7 @@ const part4View = cubec.view({
         this.jsform = new JsForm(this.refs.form, {
           id: "form-part-4",
           name: "A_form_part4",
-          events: {
-            onSubmit(data){
-              console.log(data);
-            }
-          },
+          store: true,
           plugins: [
             {
               type: "input",

@@ -1,5 +1,4 @@
 import cubec from 'cubec';
-import struct from 'ax-struct-js';
 import initConfigChecker from './checker/initConfig';
 
 import createCore from './create/core';
@@ -11,32 +10,37 @@ import defaultJsFormOptions from './define/defaultOptions';
 import JsFormPlugins from './define/jsformplugins';
 import EVENTS from './define/eventNamespace';
 
-const identify = struct.broken;
-const isDom = struct.type("dom");
-const isObject = struct.type("object");
-const isString = struct.type("string");
-const isFunction = struct.type("func");
-const isArrayLike = struct.type('arraylike');
-const v8 = struct.v8();
-const defined = struct.define();
-const each = struct.each();
-const merge = struct.merge();
-const map = struct.map();
-const extend = struct.extend();
-const eq = struct.eq();
+const {
+  _idt,
+  _isDOM,
+  _isObject,
+  _isString,
+  _isFn,
+  _isArrayLike,
+  _v8,
+  _define,
+  _eachObject,
+  _fireEvent,
+  _merge,
+  _map,
+  _extend,
+  _eq
+} = cubec.struct;
 
-const requestModel = cubec.model.extend({});
+const requestModel = cubec.model.extend({
+  parse: function(e){ return {}; }
+});
 
 class JsForm {
   constructor(root, config={}){
     // checker config
-    if(!isDom(root))
+    if(!_isDOM(root))
       throw new Error("[JSFORM] 'root' param is not dom element");
-    if(!isObject(config) || !initConfigChecker(config, JsFormPlugins))
+    if(!_isObject(config) || !initConfigChecker(config, JsFormPlugins))
       throw new Error("[JSFORM] config param is invalid");
 
     // checker config end
-    config = v8(merge(defaultJsFormOptions, config));
+    config = _v8(_merge(defaultJsFormOptions, config));
 
     // create jsForm root element
     const coreRoot = document.createElement("jsform");
@@ -56,7 +60,7 @@ class JsForm {
     };
 
     // create core & events getter
-    defined(this, {
+    _define(this, {
       name: {
         value: config.name,
         writable: false,
@@ -70,13 +74,13 @@ class JsForm {
         configurable: false,
       },
       _core: {
-        value: idt => (idt === identify ? core : {}),
+        value: idt => (idt === _idt ? core : {}),
         writable: false,
         enumerable: false,
         configurable: false,
       },
       _events: {
-        value: idt => (idt === identify ? events : {}),
+        value: idt => (idt === _idt ? events : {}),
         writable: false,
         enumerable: false,
         configurable: false,
@@ -86,6 +90,7 @@ class JsForm {
     // create formData model
     core.formData = cubec.model({
       name: config.name,
+      jsform: this,
       store: !!config.store,
       data: createCore(this, JsFormPlugins),
       events: {
@@ -102,12 +107,12 @@ class JsForm {
 
   // getFormData
   getData(name){
-    const core = this._core(identify);
+    const core = this._core(_idt);
     return core.formData.get(name);
   }
 
   setData(){
-    const core = this._core(identify);
+    const core = this._core(_idt);
 
     core.formData.set.apply(core.formData, arguments);
     return this;
@@ -116,8 +121,8 @@ class JsForm {
   // trigger validate
   validate(vname){
     let checker = true;
-    const core = this._core(identify);
-    const events = this._events(identify);
+    const core = this._core(_idt);
+    const events = this._events(_idt);
     const formData = core.formData.get();
 
     if(vname){
@@ -127,18 +132,18 @@ class JsForm {
 
       const errmsg = createValidate(core.validate[vname], formData[vname], formData, scope.required);
 
-      if(errmsg !== true && isString(errmsg)){
+      if(errmsg !== true && _isString(errmsg)){
         checker = false;
         scope.__destory = scope.self.render.call(scope, errmsg);
       }else if(errmsg === true){
         scope.__destory = scope.self.render.call(scope);
       }
     }else{
-      each(core.validate, function(validation, name){
+      _eachObject(core.validate, function(validation, name){
         const scope = core.scope[name];
         const errmsg = createValidate(validation, formData[name], formData, scope.required);
 
-        if(errmsg !== true && isString(errmsg)){
+        if(errmsg !== true && _isString(errmsg)){
           checker = false;
           scope.__destory = scope.self.render.call(scope, errmsg);
         }else if(errmsg === true){
@@ -154,54 +159,54 @@ class JsForm {
 
   // reset form data
   reset(){
-    const core = this._core(identify);
-    const events = this._events(identify);
+    const core = this._core(_idt);
+    const events = this._events(_idt);
 
     // reset form Data
-    core.formData.set(extend({}, core.defaultData), true);
+    core.formData.set(_extend({}, core.defaultData), true);
     // reset scope value
-    each(core.scope, (scope, name)=>
+    _eachObject(core.scope, (scope, name)=>
       scope.value = core.defaultData[name]);
 
     // triggerRender
     core.triggerRender();
 
-    events.emit(EVENTS.RESET, extend({},core.defaultData));
+    events.emit(EVENTS.RESET, _extend({},core.defaultData));
 
     return this;
   }
 
   clearStore(){
-    const core = this._core(identify);
+    const core = this._core(_idt);
     core.formData.clearStore();
 
     return this;
   }
 
   emit(){
-    const events = this._events(identify);
+    const events = this._events(_idt);
     events.emit.apply(events, arguments);
 
     return this;
   }
 
   updatePlugin(name, options={}){
-    const core = this._core(identify);
-    const events = this._events(identify);
+    const core = this._core(_idt);
+    const events = this._events(_idt);
     const pluginScope = core.scope[name];
 
     if(pluginScope){
       let updateFlag = false;
       const value = options.value;
-      const copyConfig = (options.config != null && isObject(options.config)) ?
-        extend({}, options.config) : pluginScope.config;
+      const copyConfig = (options.config != null && _isObject(options.config)) ?
+        _extend({}, options.config) : pluginScope.config;
 
-      if(!eq(pluginScope.config, copyConfig)){
+      if(!_eq(pluginScope.config, copyConfig)){
         updateFlag = true;
         pluginScope.config = copyConfig;
       }
 
-      if(value != null && !eq(pluginScope.value, value)){
+      if(value != null && !_eq(pluginScope.value, value)){
         updateFlag = false;
         core.formData.set(name, pluginScope.value = value);
       }
@@ -216,13 +221,13 @@ class JsForm {
 
   getPlugin(name){
     let plugin = null;
-    const core = this._core(identify);
+    const core = this._core(_idt);
     const pluginScope = core.scope[name];
 
     if(pluginScope){
-      plugin = extend({}, pluginScope.self, ["init", "events"]);
-      plugin = map(plugin, function(prop){
-        if(isFunction(prop))
+      plugin = _extend({}, pluginScope.self, ["init", "events"]);
+      plugin = _map(plugin, function(prop){
+        if(_isFn(prop))
           return prop.bind(pluginScope);
         return prop;
       });
@@ -232,18 +237,18 @@ class JsForm {
   }
 
   submit(){
-    const core = this._core(identify);
-    const events = this._events(identify);
+    const core = this._core(_idt);
+    const events = this._events(_idt);
 
     if(this.validate()){
       let formData = core.formData.get();
 
       if(core.config.url){
         try {
-          formData = events.source.beforeSync(formData);
+          formData = _fireEvent(events,"beforeSync",[formData]);
           JSON.parse(JSON.stringify(formData));
         }catch (e){
-          throw new Error("[JSFORM] [beforeSync] function convert data parse error");
+          throw new Error("[JSFORM] [beforeSync] function convert data parseJSON error");
         }
 
         const config = core.config;
@@ -269,11 +274,11 @@ class JsForm {
   }
 
   destroy(){
-    const core = this._core(identify);
-    const events = this._events(identify);
+    const core = this._core(_idt);
+    const events = this._events(_idt);
 
-    each(core.scope, function(scope){
-      if(scope.__destory && isFunction(scope.__destory))
+    _eachObject(core.scope, function(scope){
+      if(scope.__destory && _isFn(scope.__destory))
         scope.__destory();
     });
 
@@ -285,61 +290,58 @@ class JsForm {
 
   // event hooks
   onSubmit(fn){
-    const events = this._events(identify);
+    const events = this._events(_idt);
     events.on(EVENTS.SUBMIT, fn);
     return this;
   }
 
   onInValid(fn){
-    const events = this._events(identify);
+    const events = this._events(_idt);
     events.on(EVENTS.INVALID, fn);
     return this;
   }
 
   onSyncSuccess(fn){
-    const events = this._events(identify);
+    const events = this._events(_idt);
     events.on(EVENTS.SYNCSUCCESS, fn);
     return this;
   }
 
   onSyncError(fn){
-    const events = this._events(identify);
+    const events = this._events(_idt);
     events.on(EVENTS.SYNCERROR, fn);
     return this;
   }
 
   onUpdate(fn){
-    const events = this._events(identify);
+    const events = this._events(_idt);
     events.on(EVENTS.UPDATE, fn);
     return this;
   }
 
   onReset(fn){
-    const events = this._events(identify);
+    const events = this._events(_idt);
     events.on(EVENTS.RESET, fn);
     return this;
   }
 
   onDestroy(fn){
-    const events = this._events(identify);
+    const events = this._events(_idt);
     events.on(EVENTS.DESTROY, fn);
     return this;
   }
 
   beforeSync(fn){
-    if(isFunction(fn)){
-      const events = this._events(identify);
-      events.source.beforeSync = fn;
-    }
-
+    const events = this._events(_idt);
+    events.on(EVENTS.BEFORESYNC, fn);
     return this;
   }
 }
 
 JsForm.getPluginList = ()=> JsFormPlugins.getPluginList();
 JsForm.registerPlugin = plugin => JsFormPlugins.registerPlugin(plugin);
-JsForm.collect = (use, connect=false) => cubec.atom({ use: isString(use) ? [use] : (isArrayLike(use) ? use : []), connect });
+JsForm.collect = (use, connect=false) => cubec.atom({ use: _isString(use) ? [use] : (_isArrayLike(use) ? use : []), connect });
 
-JsForm.verison = "0.0.3";
+JsForm.verison = "0.0.4";
 
 export default JsForm;

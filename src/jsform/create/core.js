@@ -1,23 +1,26 @@
-import struct from 'ax-struct-js';
+import cubec from 'cubec';
 
-const isObject = struct.type("object");
-const isFunction = struct.type("func");
-const isDom = struct.type("dom");
-const each = struct.each();
-const defined = struct.define();
-const identify = struct.broken;
-const size = struct.size();
+const {
+  _isObject,
+  _isFn,
+  _isDOM,
+  _eachObject,
+  _eachArray,
+  _define,
+  _idt,
+  _size,
+} = cubec.struct;
 
 const createCore = function(jsform, JsFormPlugins){
   const defaultData = {};
-  const core = jsform._core(identify);
-  const events = jsform._events(identify);
+  const core = jsform._core(_idt);
+  const events = jsform._events(_idt);
   const scope = core.scope = {};
   const validate = core.validate = {};
   const config = core.config;
 
-  each(config.plugins, function(plugin){
-    if(plugin && isObject(plugin) && size(plugin) > 2){
+  _eachArray(config.plugins, function(plugin){
+    if(plugin && _isObject(plugin) && _size(plugin) > 2){
       let createscope = scope[plugin.name] = {};
       let createscope_handler = [];
 
@@ -30,8 +33,8 @@ const createCore = function(jsform, JsFormPlugins){
       if(plugin.validate)
         validate[plugin.name] = plugin.validate;
 
-      defined(createscope, "config", {
-        value: (plugin.config!=null && isObject(plugin.config)) ? plugin.config : {},
+      _define(createscope, "config", {
+        value: (plugin.config!=null && _isObject(plugin.config)) ? plugin.config : {},
         writable: true,
         enumerable: false,
         configurable: false,
@@ -39,15 +42,15 @@ const createCore = function(jsform, JsFormPlugins){
 
       delete plugin.config;
 
-      defined(createscope, "customRoot", {
-        value: isDom(plugin.root),
+      _define(createscope, "customRoot", {
+        value: _isDOM(plugin.root),
         writable: false,
         enumerable: false,
         configurable: false,
       });
 
-      each(plugin, function(value, prop){
-        defined(createscope, prop, {
+      _eachObject(plugin, function(value, prop){
+        _define(createscope, prop, {
           value,
           writable: false,
           enumerable: false,
@@ -55,8 +58,8 @@ const createCore = function(jsform, JsFormPlugins){
         });
       });
 
-      defined(createscope, "root", {
-        value: isDom(plugin.root) ? plugin.root : document.createElement("item"),
+      _define(createscope, "root", {
+        value: _isDOM(plugin.root) ? plugin.root : document.createElement("item"),
         writable: false,
         enumerable: false,
         configurable: false,
@@ -67,13 +70,13 @@ const createCore = function(jsform, JsFormPlugins){
 
       createscope.self = JsFormPlugins.plugins[plugin.type];
 
-      each(createscope.self.events, function(fn, event){
+      _eachObject(createscope.self.events, function(fn, event){
         events.on(event, fn.bind(createscope));
       });
 
-      if(isFunction(createscope.self.events.invalid))
+      if(_isFn(createscope.self.events.invalid))
         events.on(`invalid:${plugin.name}`, createscope.self.events.invalid.bind(createscope));
-      if(isFunction(createscope.self.events.update))
+      if(_isFn(createscope.self.events.update))
         events.on(`update:${plugin.name}`, createscope.self.events.update.bind(createscope));
 
       createscope.value = plugin.defaultValue;
@@ -88,7 +91,7 @@ const createCore = function(jsform, JsFormPlugins){
       };
       createscope.unsubscribe = function(name, handler){
         if(name && name !== createscope.name){
-          if(isFunction(handler)){
+          if(_isFn(handler)){
             core.formData.off(`change:${name}`, handler);
           }else if(handler == null){
             let fn = createscope_handler.pop();
@@ -105,11 +108,10 @@ const createCore = function(jsform, JsFormPlugins){
   });
 
   core.triggerRender = function(){
-    each(config.plugins, function(plugin){
+    _eachArray(config.plugins, function(plugin){
       const scope = core.scope[plugin.name];
       scope.__destory = JsFormPlugins.plugins[plugin.type].render.call(scope);
     });
-
     return core.scope;
   };
 

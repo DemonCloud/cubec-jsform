@@ -9,6 +9,7 @@ import "./_plugins/label-line";
 import "./_plugins/react-input";
 // import "./_plugins/vue-input";
 import cubec from 'cubec';
+import struct from 'ax-struct-js';
 
 import part1 from './form/part1';
 import part2 from './form/part2';
@@ -17,7 +18,9 @@ import part4 from './form/part4';
 import part5 from './form/part5';
 import part6 from './form/part6';
 
-window.p1 = part1;
+const every = struct.every();
+const merge = struct.merge();
+const ajax = struct.ajax();
 
 const App = cubec.view({
   forms: {
@@ -30,8 +33,45 @@ const App = cubec.view({
   },
 
   events: {
-    "click:#submit": function(){
-      part1.jsform.submit();
+    "click:.submit": function(){
+      const forms = [
+        part1.jsform,
+        part2.jsform,
+        part3.jsform,
+        part4.jsform,
+        part5.jsform,
+        part6.jsform,
+      ];
+
+      const isValidate = every(forms.map((form)=>form.validate()), (e)=>(e===true));
+
+      if(isValidate){
+        const upFormData = merge.apply(null, forms.map(form=>form.getData()));
+
+        ajax({
+          type: "POST",
+
+          url: "/api/form/submit",
+
+          param: {
+            name: upFormData.name,
+            email: upFormData.email,
+            phone: upFormData.phone,
+            formType: 1,
+            userId: upFormData.userId,
+            formContent: JSON.stringify(upFormData)
+          },
+
+          header: {
+            "Content-Type": "application/json"
+          },
+
+          success(res){
+            console.log(res);
+          }
+        });
+      }
+
     }
   },
 
@@ -42,7 +82,7 @@ const App = cubec.view({
     </div>
 
     <div class="form-submit">
-      <button class="form-submit-button" id="submit">提交表单</button>
+      <button class="form-submit-button submit">提交表单</button>
     </div>
 
     <slot>forms.part1</slot>
@@ -51,8 +91,11 @@ const App = cubec.view({
     <slot>forms.part4</slot>
     <slot>forms.part5</slot>
     <slot>forms.part6</slot>
+
+    <div class="form-submit">
+      <button class="form-submit-button submit">提交表单</button>
+    </div>
   `
 });
-
 
 App.mount(document.getElementById("app"), {});

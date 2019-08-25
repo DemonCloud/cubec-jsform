@@ -1,15 +1,17 @@
-import struct from 'ax-struct-js';
+import cubec from 'cubec';
 import createValidate from './validate';
 
-const each = struct.each();
-const identify = struct.broken;
+const {
+  _idt,
+  _eachObject,
+}= cubec.struct;
 
 const createBindJsFormInit = function(jsform, JsFormPlugins){
-  const core = jsform._core(identify);
-  const events = jsform._events(identify);
+  const core = jsform._core(_idt);
+  const events = jsform._events(_idt);
   const config = core.config;
 
-  each(config.plugins, function(plugin){
+  _eachObject(config.plugins, function(plugin){
     const scope = core.scope[plugin.name];
     const getPlugin = JsFormPlugins.plugins[plugin.type];
 

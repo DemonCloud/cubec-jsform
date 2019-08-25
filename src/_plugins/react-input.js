@@ -23,7 +23,7 @@ const Reactinput = function(props){
   );
 };
 
-JsForm.registerPlugin({
+export default JsForm.registerPlugin({
   type: "react-input",
 
   description: "react-input 组件",
@@ -33,7 +33,6 @@ JsForm.registerPlugin({
   },
 
   render(errmsg){
-    console.log(errmsg);
     const scope = this;
 
     ReactDOM.render(

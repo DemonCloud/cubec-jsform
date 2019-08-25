@@ -27,7 +27,7 @@ const Input = cubec.view.extend({
   `
 });
 
-JsForm.registerPlugin({
+export default JsForm.registerPlugin({
   type: "input",
 
   description: "input 组件",
@@ -47,12 +47,6 @@ JsForm.registerPlugin({
         }
       }
     });
-
-    if(scope.config.enterSubmit === true){
-      scope._view.on(`keypress:.form-item-${scope.name}`, function(e){
-        if(e.keyCode === 13) scope.triggerSubmit();
-      });
-    }
   },
 
   render(errmsg){

@@ -1,9 +1,10 @@
 import cubec from 'cubec';
-import struct from 'ax-struct-js';
 import EVENTS from '../define/eventNamespace';
 
-const each = struct.each();
-const extend = struct.extend();
+const {
+  _eachObject,
+  _extend
+} = cubec.struct;
 
 const emitterSuccessHandler = function(Events, formData){
   return function(res){
@@ -20,7 +21,7 @@ const emitterErrorHandler = function(Events, formData){
 const createEvents = function(config){
   const Events = cubec.model({
     name: `EVENT_MODEL_${config.name}`,
-    source: extend({}, config.events),
+    source: _extend({}, config.events),
     createEmitter: function(formData){
       const success = emitterSuccessHandler(Events, formData);
       const eerror = emitterErrorHandler(Events, formData);
@@ -34,7 +35,7 @@ const createEvents = function(config){
     }
   });
 
-  each(config.events, (fn, event)=>Events.on(event, fn));
+  _eachObject(config.events, (fn, event)=>Events.on(event, fn));
 
   delete config.events;
 

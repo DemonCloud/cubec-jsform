@@ -2,6 +2,7 @@
   "name": "cubec-jsfrom",
   "type": "SPA",
   "wap": true,
+  "package": "yarn",
   "path": {
     "output": "dist/",
     "public": "/"
@@ -18,7 +19,7 @@
     "https": false,
     "proxy": {
       "/api": {
-        "target": "https://96707d8c.ngrok.io",
+        "target": "https://mzw.natappvip.cc",
         "changeOrigin": true,
         "secure": false
       }
