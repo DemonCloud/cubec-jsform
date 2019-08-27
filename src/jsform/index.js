@@ -15,8 +15,12 @@ const {
   _isDOM,
   _isObject,
   _isString,
+  _isArray,
+  _isBool,
+  _isDefine,
   _isFn,
   _isArrayLike,
+  _eachArray,
   _v8,
   _define,
   _eachObject,
@@ -28,7 +32,7 @@ const {
 } = cubec.struct;
 
 const requestModel = cubec.model.extend({
-  parse: function(e){ return {}; }
+  parse(){ return {}; }
 });
 
 class JsForm {
@@ -48,14 +52,15 @@ class JsForm {
     coreRoot.setAttribute("name", config.name);
     coreRoot.setAttribute("namespace", Math.random().toString().replace(".",""));
 
-    if(config.className)
-      coreRoot.className = config.className;
+    if(config.className) coreRoot.className = config.className;
 
     // create Event system
-    const events = createEvents(config);
-    // create core scope
+    const events = createEvents(config, this);
+    // create JsForm Core
     const core = {
       root: coreRoot,
+      pluginRoots: {},
+      pluginExpose: [],
       config: Object.freeze(config)
     };
 
@@ -124,6 +129,7 @@ class JsForm {
     const core = this._core(_idt);
     const events = this._events(_idt);
     const formData = core.formData.get();
+    const errfield = [];
 
     if(vname){
       const scope = core.scope[vname];
@@ -135,6 +141,11 @@ class JsForm {
       if(errmsg !== true && _isString(errmsg)){
         checker = false;
         scope.__destory = scope.self.render.call(scope, errmsg);
+        errfield.push({
+          name: vname,
+          value: formData[vname],
+          errmsg
+        });
       }else if(errmsg === true){
         scope.__destory = scope.self.render.call(scope);
       }
@@ -146,15 +157,39 @@ class JsForm {
         if(errmsg !== true && _isString(errmsg)){
           checker = false;
           scope.__destory = scope.self.render.call(scope, errmsg);
+          errfield.push({
+            name: name,
+            value: formData[name],
+            errmsg
+          });
         }else if(errmsg === true){
           scope.__destory = scope.self.render.call(scope);
         }
       });
     }
 
-    if(!checker) events.emit(EVENTS.INVALID, formData);
+    if(!checker) events.emit(EVENTS.INVALID, [errfield]);
 
     return checker;
+  }
+
+  scrollTo(name, options={}){
+    const core = this._core(_idt);
+    const events = this._events(_idt);
+    const findRoot = core.pluginRoots[name];
+
+    if(findRoot){
+      findRoot.scrollIntoView(
+        _extend(
+          {behavior: "smooth", block: "center", inline: "nearest"},
+          (options != null && _isObject(options)) ? options : {}
+        )
+      );
+
+      setTimeout(()=>events.emit(`scrollTo:${name}`), 300);
+    }
+
+    return this;
   }
 
   // reset form data
@@ -183,13 +218,6 @@ class JsForm {
     return this;
   }
 
-  emit(){
-    const events = this._events(_idt);
-    events.emit.apply(events, arguments);
-
-    return this;
-  }
-
   updatePlugin(name, options={}){
     const core = this._core(_idt);
     const events = this._events(_idt);
@@ -197,22 +225,45 @@ class JsForm {
 
     if(pluginScope){
       let updateFlag = false;
+      let valueChanged = false;
       const value = options.value;
       const copyConfig = (options.config != null && _isObject(options.config)) ?
         _extend({}, options.config) : pluginScope.config;
 
+      // config change
       if(!_eq(pluginScope.config, copyConfig)){
         updateFlag = true;
         pluginScope.config = copyConfig;
       }
 
+      if(_isBool(options.required)){
+        updateFlag = true;
+        pluginScope.required = options.required;
+
+        if(!core.validate[name] && pluginScope.required)
+          core.validate[name] = pluginScope.required;
+      }
+
+      if(options.validate != null &&
+        (_isArray(options.validate) ||
+         _isFn(options.validate) ||
+         _isDefine(options.validate, "RegExp"))
+      ){
+        updateFlag = true;
+        core.validate[name] = options.validate;
+      }else if(options.validate === false){
+        if(delete core.validate[name])
+         updateFlag = true;
+      }
+
+      // value change
       if(value != null && !_eq(pluginScope.value, value)){
-        updateFlag = false;
-        core.formData.set(name, pluginScope.value = value);
+        valueChanged = true;
+        core.formData.set(name, (pluginScope.value = value));
       }
 
       if(updateFlag){
-        core.formData.emit(`change:${name}`, [value]);
+        if(!valueChanged) core.formData.emit(`change:${name}`, [pluginScope.value]);
         events.emit(`update:${name}`, [copyConfig]);
       }
 
@@ -227,13 +278,12 @@ class JsForm {
     if(pluginScope){
       plugin = _extend({}, pluginScope.self, ["init", "events"]);
       plugin = _map(plugin, function(prop){
-        if(_isFn(prop))
-          return prop.bind(pluginScope);
+        if(_isFn(prop)) return prop.bind(pluginScope);
         return prop;
       });
     }
 
-    return plugin;
+    return plugin ? Object.freeze(plugin) : plugin;
   }
 
   submit(){
@@ -282,53 +332,12 @@ class JsForm {
         scope.__destory();
     });
 
+    _eachObject(core, function(prop){ delete core[prop]; });
+
     events.emit(EVENTS.DESTROY, core.formData.get());
     events.off();
 
     this._root.innerHTML = "";
-  }
-
-  // event hooks
-  onSubmit(fn){
-    const events = this._events(_idt);
-    events.on(EVENTS.SUBMIT, fn);
-    return this;
-  }
-
-  onInValid(fn){
-    const events = this._events(_idt);
-    events.on(EVENTS.INVALID, fn);
-    return this;
-  }
-
-  onSyncSuccess(fn){
-    const events = this._events(_idt);
-    events.on(EVENTS.SYNCSUCCESS, fn);
-    return this;
-  }
-
-  onSyncError(fn){
-    const events = this._events(_idt);
-    events.on(EVENTS.SYNCERROR, fn);
-    return this;
-  }
-
-  onUpdate(fn){
-    const events = this._events(_idt);
-    events.on(EVENTS.UPDATE, fn);
-    return this;
-  }
-
-  onReset(fn){
-    const events = this._events(_idt);
-    events.on(EVENTS.RESET, fn);
-    return this;
-  }
-
-  onDestroy(fn){
-    const events = this._events(_idt);
-    events.on(EVENTS.DESTROY, fn);
-    return this;
   }
 
   beforeSync(fn){
@@ -338,10 +347,31 @@ class JsForm {
   }
 }
 
+_eachArray([
+  "onSubmit",
+  "onInValid",
+  "onSyncSuccess",
+  "onSyncError",
+  "onUpdate",
+  "onReset",
+  "onDestroy"
+], function(name){
+  _define(JsForm.prototype, name, {
+    value: function(fn){
+      const events = this._events(_idt);
+      events.on(EVENTS[(name.slice(2)).toUpperCase()],fn.bind(this));
+      return this;
+    },
+    writable: false,
+    enumerable: false,
+    configurable: false
+  });
+});
+
 JsForm.getPluginList = ()=> JsFormPlugins.getPluginList();
 JsForm.registerPlugin = plugin => JsFormPlugins.registerPlugin(plugin);
 JsForm.collect = (use, connect=false) => cubec.atom({ use: _isString(use) ? [use] : (_isArrayLike(use) ? use : []), connect });
 
-JsForm.verison = "0.0.4";
+JsForm.verison = "0.0.5";
 
 export default JsForm;

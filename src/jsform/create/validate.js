@@ -24,7 +24,7 @@ const createValidate = function(validate, value, formData, isRequired){
   if(_isBool(validate))
     return true;
 
-  if(!isRequired && (value === ""|| value === null))
+  if(!isRequired && (value === "" || value === null))
     return true;
 
   if(_isFn(validate))

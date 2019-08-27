@@ -60,9 +60,13 @@ export default JsForm.registerPlugin({
     });
   },
 
-  events: {
-    // invalid: function(value, formData, errmsg){
-    //   console.log("input", this.name, value);
-    // }
-  }
+  focus(){
+    this._view.refs.input.focus();
+  },
+
+  // events: {
+  //   scrollTo(){
+  //     console.log(this);
+  //   }
+  // }
 });

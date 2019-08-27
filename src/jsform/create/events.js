@@ -18,7 +18,7 @@ const emitterErrorHandler = function(Events, formData){
   };
 };
 
-const createEvents = function(config){
+const createEvents = function(config, jsform){
   const Events = cubec.model({
     name: `EVENT_MODEL_${config.name}`,
     source: _extend({}, config.events),
@@ -35,8 +35,7 @@ const createEvents = function(config){
     }
   });
 
-  _eachObject(config.events, (fn, event)=>Events.on(event, fn));
-
+  _eachObject(config.events, (fn, event)=>Events.on(event, fn.bind(jsform)));
   delete config.events;
 
   return Events;

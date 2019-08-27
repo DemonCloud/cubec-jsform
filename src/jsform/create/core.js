@@ -7,9 +7,17 @@ const {
   _eachObject,
   _eachArray,
   _define,
+  _has,
   _idt,
   _size,
+  _extend
 } = cubec.struct;
+
+const selfEventsList = [
+  "invalid",
+  "update",
+  "scrollTo",
+];
 
 const createCore = function(jsform, JsFormPlugins){
   const defaultData = {};
@@ -27,14 +35,17 @@ const createCore = function(jsform, JsFormPlugins){
       if(plugin.defaultValue)
         defaultData[plugin.name] = plugin.defaultValue;
 
-      if(plugin.required)
+      createscope.required = !!plugin.required;
+
+      if(plugin.required && delete plugin.required)
         validate[plugin.name] = true;
 
       if(plugin.validate)
         validate[plugin.name] = plugin.validate;
 
       _define(createscope, "config", {
-        value: (plugin.config!=null && _isObject(plugin.config)) ? plugin.config : {},
+        value: (plugin.config!=null && _isObject(plugin.config)) ?
+          _extend({},plugin.config) : {},
         writable: true,
         enumerable: false,
         configurable: false,
@@ -65,19 +76,24 @@ const createCore = function(jsform, JsFormPlugins){
         configurable: false,
       });
 
+      core.pluginRoots[plugin.name] = createscope.root;
+
       if(plugin.className)
         createscope.root.className = plugin.className;
 
       createscope.self = JsFormPlugins.plugins[plugin.type];
 
       _eachObject(createscope.self.events, function(fn, event){
-        events.on(event, fn.bind(createscope));
+        if(!_has(selfEventsList, event))
+          events.on(event, fn.bind(createscope));
       });
 
-      if(_isFn(createscope.self.events.invalid))
-        events.on(`invalid:${plugin.name}`, createscope.self.events.invalid.bind(createscope));
-      if(_isFn(createscope.self.events.update))
-        events.on(`update:${plugin.name}`, createscope.self.events.update.bind(createscope));
+      _eachArray(selfEventsList, function(fnName){
+        const fn = createscope.self.events[fnName];
+
+        if(_isFn(fn))
+          events.on(`${fnName}:${plugin.name}`, fn.bind(createscope));
+      });
 
       createscope.value = plugin.defaultValue;
       createscope.setValue = function(value, isStatic){ core.formData.set(plugin.name, value, isStatic); };

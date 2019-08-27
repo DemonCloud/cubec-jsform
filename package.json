@@ -1,6 +1,6 @@
 {
   "name": "cubec-jsform",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Cubec Part - [Cubec-JsForm] Integrated component-based static form solution",
   "main": "src/jsform/index.js",
   "repository": "https://github.com/DemonCloud/cubec-jsform.git",

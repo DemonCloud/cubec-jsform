@@ -73,6 +73,7 @@ ct {
 
   .form-part-itemwrap {
     display: flex;
+    min-height: 100px;
 
     &:last-child{
       input,

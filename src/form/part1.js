@@ -1,10 +1,7 @@
 import cubec from 'cubec';
-import struct from 'ax-struct-js';
 import JsForm from 'JSFORM/jsform';
 import InputPlugin from "../_plugins/input";
 import SelectPlugin from '../_plugins/select';
-
-const _ajax = struct.ajax();
 
 const part1View = cubec.view({
   name: "aucan-form-A-part1",
@@ -129,6 +126,15 @@ const part1View = cubec.view({
             }),
           ]
         });
+
+        this.jsform.onInValid(function(errors){
+          console.log(this);
+
+          const err = errors[0];
+          // const errPlugin = this.getPlugin(err.name);
+          this.scrollTo(err.name);
+        });
+
       }
     }
   }

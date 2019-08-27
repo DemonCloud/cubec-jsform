@@ -21,6 +21,7 @@ const part4View = cubec.view({
           id: "form-part-4",
           name: "A_form_part4",
           store: true,
+          expose: true,
           plugins: [
             {
               type: "input",
