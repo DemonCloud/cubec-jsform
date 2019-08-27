@@ -4,6 +4,7 @@ import throttle from '../utils/throttle';
 
 const {
   _idt,
+  _define,
   _eachArray,
   _eachObject,
 }= cubec.struct;
@@ -26,25 +27,32 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
       if(core.validate[plugin.name]){
         const formData = this.get();
         const errmsg = createValidate(core.validate[plugin.name], value, formData, scope.required);
-        scope.__destory = scope.self.render.call(scope, errmsg === true ?  void 0 : errmsg);
+        scope.__render(errmsg);
         if(errmsg) events.emit(`invalid:${plugin.name}`, [value,formData,errmsg]);
       }else{
-        scope.self.render.call(scope);
+        scope.__render();
       }
     });
+
+    const scopeInit = function(){
+      getPlugin.init.call(scope);
+      scope.__destory = getPlugin.render.call(scope);
+      _define(scope, "__init", {
+        value: true,
+        writable: false,
+        enumerable: false,
+        configurable: false
+      });
+    };
 
     if(config.expose){
       core.pluginExpose.push({
         name: plugin.name,
         root: scope.root,
-        createInit(){
-          getPlugin.init.call(scope);
-          scope.__destory = getPlugin.render.call(scope);
-        }
+        createInit: scopeInit
       });
     }else{
-      getPlugin.init.call(scope);
-      scope.__destory = getPlugin.render.call(scope);
+      scopeInit();
     }
 
     if(!scope.customRoot) core.root.appendChild(scope.root);
@@ -63,7 +71,7 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
       _eachArray(core.pluginExpose, function(plugin){
         const rect = plugin.root.getBoundingClientRect();
 
-        if(rect.top < (window.innerHeight - 50) && rect.bottom > 40){
+        if(rect.top < (window.innerHeight - 90) && rect.bottom > 80){
           plugin.createInit();
         }else
           nextPluginExpose.push(plugin);

@@ -29,8 +29,13 @@ const createCore = function(jsform, JsFormPlugins){
 
   _eachArray(config.plugins, function(plugin){
     if(plugin && _isObject(plugin) && _size(plugin) > 2){
-      let createscope = scope[plugin.name] = {};
+      let createscope = scope[plugin.name] = { __init: false };
       let createscope_handler = [];
+
+      createscope.__render = function(errmsg){
+        if(this.__init)
+          this.__destory = this.self.render.call(this, errmsg === true ?  void 0 : errmsg);
+      }.bind(createscope);
 
       if(plugin.defaultValue)
         defaultData[plugin.name] = plugin.defaultValue;
@@ -91,8 +96,7 @@ const createCore = function(jsform, JsFormPlugins){
       _eachArray(selfEventsList, function(fnName){
         const fn = createscope.self.events[fnName];
 
-        if(_isFn(fn))
-          events.on(`${fnName}:${plugin.name}`, fn.bind(createscope));
+        if(_isFn(fn)) events.on(`${fnName}:${plugin.name}`, fn.bind(createscope));
       });
 
       createscope.value = plugin.defaultValue;

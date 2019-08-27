@@ -140,15 +140,14 @@ class JsForm {
 
       if(errmsg !== true && _isString(errmsg)){
         checker = false;
-        scope.__destory = scope.self.render.call(scope, errmsg);
         errfield.push({
           name: vname,
           value: formData[vname],
           errmsg
         });
-      }else if(errmsg === true){
-        scope.__destory = scope.self.render.call(scope);
       }
+
+      scope.__render(errmsg);
     }else{
       _eachObject(core.validate, function(validation, name){
         const scope = core.scope[name];
@@ -156,15 +155,14 @@ class JsForm {
 
         if(errmsg !== true && _isString(errmsg)){
           checker = false;
-          scope.__destory = scope.self.render.call(scope, errmsg);
           errfield.push({
             name: name,
             value: formData[name],
             errmsg
           });
-        }else if(errmsg === true){
-          scope.__destory = scope.self.render.call(scope);
         }
+
+        scope.__render(errmsg);
       });
     }
 
