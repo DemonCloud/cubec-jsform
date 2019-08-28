@@ -3,7 +3,6 @@ import cubec from 'cubec';
 const {
   _isString,
   _isArray,
-  _eachArray,
 } = cubec.struct;
 
 const initConfigChecker = function(config, JsFormPlugins){
@@ -25,8 +24,22 @@ const initConfigChecker = function(config, JsFormPlugins){
     console.error("[JSFORM] [config error] {plugins} must be defined and contains at least one plug-in");
   }
 
-  if(_isArray(config.plugins))
+  if(_isArray(config.plugins)){
     config.plugins = config.plugins.filter((e)=>e);
+
+    const names = {};
+    let i = config.plugins.length;
+    let tmp;
+    for(; i--; ){
+      tmp = config.plugins[i].name;
+      if(names[tmp]){
+        checker = false;
+        console.error(`[JSFORM] [config error] {plugins} exist repetitive name plugin -> {${tmp}}`);
+        break;
+      }else
+        names[tmp] = true;
+    }
+  }
 
   return checker;
 };

@@ -36,16 +36,17 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
 
     const scopeInit = function(){
       getPlugin.init.call(scope);
-      scope.__destory = getPlugin.render.call(scope);
       _define(scope, "__init", {
         value: true,
         writable: false,
         enumerable: false,
         configurable: false
       });
+      scope.__render();
     };
 
-    if(config.expose){
+    if((config.expose && plugin.expose !== false) || plugin.expose){
+      scope.__isExpose = false;
       core.pluginExpose.push({
         name: plugin.name,
         root: scope.root,
@@ -59,7 +60,7 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
   });
 
   // expose method
-  if(config.expose){
+  if(core.pluginExpose.length){
     const handlerExpose = throttle(function(e){
       if(!core.pluginExpose.length){
         removeEventListener("resize", handlerExpose, false);
@@ -77,13 +78,11 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
           nextPluginExpose.push(plugin);
       });
       core.pluginExpose = nextPluginExpose;
-    }, 120, {
-      'leading': true,
-      'trailing': true
-    });
+    }, 120);
 
     addEventListener("resize", handlerExpose, false);
     addEventListener("scroll", handlerExpose, false);
+    dispatchEvent(new Event("resize"));
   }
 
   return core.root;

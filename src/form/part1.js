@@ -29,6 +29,7 @@ const part1View = cubec.view({
               name: "name",
               className: "form-part-itemwrap name",
               required: true,
+              // expose: true,
               config: {
                 label: "姓名",
                 placeholder: "请填写姓名",
