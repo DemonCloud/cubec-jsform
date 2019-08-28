@@ -14,4 +14,8 @@ page
 page/*
 mock
 mock/*
+src
+src/*
+yarn.error
+rollup.config.js
 .tern-port

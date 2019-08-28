@@ -5,14 +5,22 @@ const resolve = require('rollup-plugin-node-resolve');
 const uglify = require('rollup-plugin-uglify');
 const babel = require('rollup-plugin-babel');
 const optimizeJs = require('rollup-plugin-optimize-js');
+const autoExternal = require('rollup-plugin-auto-external');
 
 const path = require('path');
 const inputfile = path.resolve('./') + '/src/jsform/index.js';
-const outputfile = path.resolve('./') + '/dist/jsform.min.js';
+const outputfile = path.resolve('./') + '/dist/jsform.js';
 
 // 定义plugin
 const plugins = [
   resolve(),
+
+  autoExternal({
+    builtins: false,
+    dependencies: true,
+    packagePath: path.resolve(__dirname, "./package.json"),
+    peerDependencies: false,
+  }),
 
   commonjs({
     include: 'node_modules/**',
@@ -43,8 +51,9 @@ const plugins = [
       ],
     ],
   }),
+
   // 压缩
-  uglify.uglify(),
+  // uglify.uglify(),
 
   optimizeJs()
 ];
@@ -59,6 +68,7 @@ const builder = async function() {
     file: outputfile,
     sourcemap: false,
     format: 'umd',
+    // external: 'cubec',
     name: 'JsForm',
     onwarn(warning, warn) {
       if (warning.code === 'THIS_IS_UNDEFINED') return;
