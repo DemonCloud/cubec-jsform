@@ -4,11 +4,13 @@ const {
   _isObject,
   _isFn,
   _isDOM,
+  _isString,
   _isPlainObject,
   _eachObject,
   _eachArray,
   _define,
   _has,
+  _map,
   _idt,
   _size,
   _extend
@@ -90,7 +92,10 @@ export default function createScope(
     if(plugin.className)
       createscope.root.className = plugin.className;
 
-    createscope.self = JsFormPlugins.plugins[plugin.type];
+    createscope.self = _map(JsFormPlugins.plugins[plugin.type], function(props){
+      if(_isFn(props)) props = props.bind(createscope);
+      return props;
+    });
 
     _eachObject(createscope.self.events, function(fn, event){
       if(!_has(selfEventsList, event))
@@ -128,6 +133,12 @@ export default function createScope(
     };
     createscope.forceRender = function(errmsg){ createscope.__destory = createscope.self.render.call(createscope, errmsg); };
     createscope.getFormData = function(name){ return jsform.getData.apply(jsform, arguments); };
+    createscope.getPlugin = function(name){
+      if(_isString(name) && plugin.name != name)
+        return jsform.getPlugin(name);
+      return null;
+    };
+
   }
 
   return createscope;

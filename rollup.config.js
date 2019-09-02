@@ -53,7 +53,7 @@ const plugins = [
   }),
 
   // 压缩
-  // uglify.uglify(),
+  uglify.uglify(),
 
   optimizeJs()
 ];

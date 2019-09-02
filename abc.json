@@ -11,6 +11,9 @@
     "JSFORM": "src"
   },
   "define": {
+    "dev": {
+      "ISDEV": 1
+    }
   },
   "provide": {
   },

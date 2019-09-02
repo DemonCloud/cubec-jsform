@@ -24,7 +24,7 @@ const Input = cubec.view.extend({
         type="{{#config.type || "text"}}"
         value="{{#value}}" />
     </div>
-  `
+  `,
 });
 
 export default JsForm.registerPlugin({
@@ -43,7 +43,7 @@ export default JsForm.registerPlugin({
           scope.setValue(e.currentTarget.value);
         },
         "click:label": function(e){
-          this.refs.input.focus();
+          scope.self.focus();
         }
       }
     });

@@ -26,7 +26,6 @@ const {
   _eachObject,
   _fireEvent,
   _merge,
-  _map,
   _extend,
   _eq
 } = cubec.struct;
@@ -273,13 +272,8 @@ class JsForm {
     const core = this._core(_idt);
     const pluginScope = core.scope[name];
 
-    if(pluginScope){
+    if(pluginScope)
       plugin = _extend({}, pluginScope.self, ["init", "events"]);
-      plugin = _map(plugin, function(prop){
-        if(_isFn(prop)) return prop.bind(pluginScope);
-        return prop;
-      });
-    }
 
     return plugin ? Object.freeze(plugin) : plugin;
   }
@@ -370,6 +364,6 @@ JsForm.getPluginList = ()=> JsFormPlugins.getPluginList();
 JsForm.registerPlugin = plugin => JsFormPlugins.registerPlugin(plugin);
 JsForm.collect = (use, connect=false) => cubec.atom({ use: _isString(use) ? [use] : (_isArrayLike(use) ? use : []), connect });
 
-JsForm.verison = "0.0.6";
+JsForm.verison = "0.0.8";
 
 export default JsForm;
