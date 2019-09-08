@@ -47,6 +47,7 @@ export default JsForm.registerPlugin({
         }
       }
     });
+
   },
 
   render(errmsg){
@@ -62,6 +63,10 @@ export default JsForm.registerPlugin({
 
   focus(){
     this._view.refs.input.focus();
+  },
+
+  abc(){
+    console.log(1);
   },
 
   // events: {

@@ -1,6 +1,6 @@
 {
   "name": "cubec-jsform",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Cubec Part - [Cubec-JsForm] Integrated component-based static form solution",
   "main": "dist/jsform.js",
   "repository": "https://github.com/DemonCloud/cubec-jsform.git",
@@ -10,7 +10,7 @@
   "author": "YiJun",
   "license": "Apache License 2.0",
   "dependencies": {
-    "cubec": "^1.7.5"
+    "cubec": "^1.7.6"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

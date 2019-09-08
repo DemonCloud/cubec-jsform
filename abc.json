@@ -4,19 +4,13 @@
   "wap": true,
   "package": "yarn",
   "path": {
-    "output": "dist/",
+    "output": "demo/",
     "public": "/"
   },
   "alias": {
     "JSFORM": "src"
   },
-  "define": {
-    "dev": {
-      "ISDEV": 1
-    }
-  },
-  "provide": {
-  },
+  "define": {},
   "devServer": {
     "port": 9006,
     "https": false,

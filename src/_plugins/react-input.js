@@ -46,6 +46,8 @@ export default JsForm.registerPlugin({
       />,
       scope.root
     );
+
+    return ()=>ReactDOM.unmountComponentAtNode(scope.root);
   },
 
 });
