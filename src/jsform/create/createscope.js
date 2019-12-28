@@ -5,6 +5,8 @@ const {
   _isFn,
   _isDOM,
   _isString,
+  _isNumber,
+  _toString,
   _isPlainObject,
   _eachObject,
   _eachArray,
@@ -88,6 +90,15 @@ export default function createScope(
     });
 
     core.pluginRoots[plugin.name] = createscope.root;
+
+    // create expose root minHeight
+    if(createscope.root &&
+      ((core.config.expose && plugin.expose!==false) || plugin.expose === true) &&
+      (plugin.exposeMinHeight)
+    ){
+      createscope.root.style.minHeight =
+        _isNumber(plugin.exposeMinHeight) ? plugin.exposeMinHeight+"px" : _toString(plugin.exposeMinHeight);
+    }
 
     if(plugin.className)
       createscope.root.className = plugin.className;

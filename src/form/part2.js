@@ -21,7 +21,6 @@ const part2View = cubec.view({
           id: "form-part-2",
           name: "A_form_part2",
           store: true,
-          expose: true,
           plugins: [
             {
               type: "input",
@@ -37,7 +36,9 @@ const part2View = cubec.view({
             {
               type: "input",
               name: "save_address",
+              expose: true,
               className: "form-part-itemwrap save_address",
+              exposeMinHeight: 300,
               config: {
                 label: "收件地址",
                 placeholder: "如不同当前住址，请填写",

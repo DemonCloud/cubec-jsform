@@ -4,6 +4,7 @@ import createScope from './createscope';
 const {
   _eachArray,
   _idt,
+  _clone
 } = cubec.struct;
 
 const createCore = function(jsform, JsFormPlugins){
@@ -21,14 +22,18 @@ const createCore = function(jsform, JsFormPlugins){
   core.triggerRender = function(){
     _eachArray(config.plugins, function(plugin){
       const scope = core.scope[plugin.name];
-      scope.__destory = JsFormPlugins.plugins[plugin.type].render.call(scope);
+      // console.log(scope);
+      scope.__destory = scope.__render();
     });
     return core.scope;
   };
 
-  core.defaultData = defaultData;
+  //   console.log(jsform, defaultData);
 
-  return defaultData;
+  // default reset data
+  core.defaultData = _clone(defaultData);
+
+  return _clone(defaultData);
 };
 
 export default createCore;

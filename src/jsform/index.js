@@ -30,9 +30,7 @@ const {
   _eq
 } = cubec.struct;
 
-const requestModel = cubec.model.extend({
-  parse(){ return {}; }
-});
+const requestModel = cubec.model.extend({});
 
 class JsForm {
   constructor(root, config={}){
@@ -196,6 +194,7 @@ class JsForm {
 
     // reset form Data
     core.formData.set(_extend({}, core.defaultData), true);
+
     // reset scope value
     _eachObject(core.scope, (scope, name)=>
       scope.value = core.defaultData[name]);
@@ -285,6 +284,7 @@ class JsForm {
     if(this.validate()){
       let formData = core.formData.get();
 
+      // TODO 重写部分
       if(core.config.url){
         try {
           formData = _fireEvent(events,"beforeSync",[formData]);
@@ -342,8 +342,6 @@ class JsForm {
 _eachArray([
   "onSubmit",
   "onInValid",
-  "onSyncSuccess",
-  "onSyncError",
   "onUpdate",
   "onReset",
   "onDestroy"
@@ -364,6 +362,6 @@ JsForm.getPluginList = ()=> JsFormPlugins.getPluginList();
 JsForm.registerPlugin = plugin => JsFormPlugins.registerPlugin(plugin);
 JsForm.collect = (use, connect=false) => cubec.atom({ use: _isString(use) ? [use] : (_isArrayLike(use) ? use : []), connect });
 
-JsForm.verison = "0.0.9";
+JsForm.verison = "0.0.10";
 
 export default JsForm;

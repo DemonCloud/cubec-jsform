@@ -36,16 +36,23 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
 
     const scopeInit = function(){
       getPlugin.init.call(scope);
+
       _define(scope, "__init", {
         value: true,
         writable: false,
         enumerable: false,
         configurable: false
       });
+
       scope.__render();
+
+      // remove scope minHeight;
+      if(scope.exposeMinHeight)
+        scope.root.style.minHeight = "";
     };
 
     if((config.expose && plugin.expose !== false) || plugin.expose){
+      // if(plugin.expose){ console.log(plugin); }
       scope.__isExpose = false;
       core.pluginExpose.push({
         name: plugin.name,

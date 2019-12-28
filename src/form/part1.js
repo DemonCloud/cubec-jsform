@@ -3,6 +3,9 @@ import JsForm from 'JSFORM/jsform';
 import InputPlugin from "../_plugins/input";
 import SelectPlugin from '../_plugins/select';
 
+window.JsForm = JsForm;
+window.cubec = cubec;
+
 const part1View = cubec.view({
   name: "aucan-form-A-part1",
 
@@ -22,7 +25,6 @@ const part1View = cubec.view({
         window.p1 = this.jsform = new JsForm(this.refs.form, {
           id: "form-part-1",
           name: "A_form_part1",
-          store: true,
 
           plugins: [
             InputPlugin({

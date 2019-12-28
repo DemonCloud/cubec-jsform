@@ -12,7 +12,7 @@ body {
   background-color: #fcfcfe;
 }
 
-ct {
+cubec {
   display: block;
   flex: 1;
 }
@@ -39,6 +39,7 @@ ct {
     display: block;
     width: 100%;
     max-width: 100%;
+    min-height: 200px;
   }
 
   .form-logo_title{

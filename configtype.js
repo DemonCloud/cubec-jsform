@@ -12,17 +12,16 @@
 // jsform.getPlugin(name)
 // jsform.updatePlugin(name, { config, value })
 // jsform.setData(name,value)
+// jsform.clearStore()
+// jsform.scrollTo()
 // jsform.validate(name)
 // jsform.destroy()
-// jsform.emit()
 // jsform.reset()
 
 // 事件函数
 // jsform.onSubmit(fn)
 // jsform.onInValid(fn)
 // jsform.beforeSync(fn)
-// jsform.onSyncSuccess(fn)
-// jsform.onSyncError(fn)
 // jsform.onUpdate(fn)
 // jsform.onReset(fn)
 // jsform.onDestroy(fn)
@@ -40,17 +39,11 @@ const formconfig = {
   // 表单名称 [必须]
   name: "jsform-example",
 
-  // 表单提交的地址
-  url: "/postformdata.do",
-
-  // 提交数据格式
-  emulateJSON: true,
-
   // 持久化
   store: true,
 
-  // 请求方法
-  method: "GET",
+  // 是否滚动加载渲染
+  expose: true,
 
   // 表单钩子
   events: {
@@ -72,15 +65,6 @@ const formconfig = {
 
     // 调用 jsForm.submit() 后立马触发
     onSubmit(data){
-
-    },
-
-    // 如果定义了URL，则这个事件会发生在提交数据之后服务器返回响应
-    onSyncSuccess(data, res){
-
-    },
-
-    onSyncError(data, res){
 
     },
 
@@ -108,7 +92,9 @@ const formconfig = {
 
       required: true,
 
-      relative: ["data-checkbox"],
+      expose: true,
+
+      exposeMinHeight: 300,
 
       validate: /abc/i,
 
@@ -133,6 +119,12 @@ const plugin = {
 
   description: "插件描述",
 
+  init(){
+    // 初始化插件
+    // 创建时调用一次
+
+  },
+
   render(errmsg){
     // errmsg
     // this.root 挂在的dom节点
@@ -146,6 +138,8 @@ const plugin = {
     // this.className 获取当前控件的className
     // this.value 当前控件的值
     // this.required 是否为必须
+
+    return 0; // 返回销毁函数
   },
 
   // 可选函数
