@@ -21,7 +21,7 @@
 // 事件函数
 // jsform.onSubmit(fn)
 // jsform.onInValid(fn)
-// jsform.beforeSync(fn)
+// jsform.beforeSubmit(fn)
 // jsform.onUpdate(fn)
 // jsform.onReset(fn)
 // jsform.onDestroy(fn)
@@ -53,7 +53,7 @@ const formconfig = {
     },
 
     // 在提交前，可以处理数据格式
-    beforeSync(data){
+    beforeSubmit(data){
       let abc = data;
       return abc;
     },

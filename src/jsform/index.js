@@ -277,42 +277,18 @@ class JsForm {
     return plugin ? Object.freeze(plugin) : plugin;
   }
 
-  submit(){
+  submit(actions){
     const core = this._core(_idt);
     const events = this._events(_idt);
 
     if(this.validate()){
       let formData = core.formData.get();
-
-      // TODO 重写部分
-      if(core.config.url){
-        try {
-          formData = _fireEvent(events,"beforeSync",[formData]);
-          JSON.parse(JSON.stringify(formData));
-        }catch (e){
-          throw new Error("[JSFORM] [beforeSync] function convert data parseJSON error");
-        }
-
-        const config = core.config;
-        // create request
-        const request = requestModel({
-          url: config.url,
-          data: formData,
-          emulateJSON: config.emulateJSON,
-          events: events.createEmitter(formData)
-        });
-
-        if(config.method === "GET"){
-          request.fetch(formData, config.header);
-        }else{
-          request.sync(config.header);
-        }
-      }
+      formData = _fireEvent(events,"beforeSubmit",[formData]);
 
       events.emit(EVENTS.SUBMIT, formData);
-    }
 
-    return this;
+      if(_isFn(actions)) return actions(formData);
+    }
   }
 
   destroy(){
@@ -332,9 +308,9 @@ class JsForm {
     this._root.innerHTML = "";
   }
 
-  beforeSync(fn){
+  beforeSubmit(fn){
     const events = this._events(_idt);
-    events.on(EVENTS.BEFORESYNC, fn);
+    events.on(EVENTS.BEFORESUBMIT, fn);
     return this;
   }
 }

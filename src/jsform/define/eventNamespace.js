@@ -1,11 +1,7 @@
 const EVENTS = {
   CREATE: "onCreate",
 
-  BEFORESYNC: "beforeSync",
-
-  SYNCSUCCESS: "onSyncSuccess",
-
-  SYNCERROR: "onSyncError",
+  BEFORESUBMIT: "beforeSubmit",
 
   INVALID: "onInValid",
 
