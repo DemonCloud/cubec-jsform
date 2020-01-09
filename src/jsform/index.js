@@ -30,8 +30,6 @@ const {
   _eq
 } = cubec.struct;
 
-const requestModel = cubec.model.extend({});
-
 class JsForm {
   constructor(root, config={}){
     // checker config
@@ -338,6 +336,6 @@ JsForm.getPluginList = ()=> JsFormPlugins.getPluginList();
 JsForm.registerPlugin = plugin => JsFormPlugins.registerPlugin(plugin);
 JsForm.collect = (use, connect=false) => cubec.atom({ use: _isString(use) ? [use] : (_isArrayLike(use) ? use : []), connect });
 
-JsForm.verison = "0.0.10";
+JsForm.verison = "0.0.11";
 
 export default JsForm;

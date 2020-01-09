@@ -82,7 +82,7 @@ const App = cubec.view({
     }
   },
 
-  template: `
+  render: `
     <div class="form">
       <div class="form-logo">
         <img src="https://s2.ax1x.com/2019/07/06/Z0st3R.png" alt="aucan" class="form-logo_img" />
@@ -100,7 +100,7 @@ const App = cubec.view({
         <b class="form-submit-button submit">提交表单</b>
       </div>
     </div>
-  `
+  `,
 });
 
 App.mount(document.getElementById("app"), {});
