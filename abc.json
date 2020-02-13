@@ -1,6 +1,6 @@
 {
   "name": "cubec-jsfrom",
-  "type": "SPA",
+  "type": "SPA-xcli-plugin",
   "wap": true,
   "package": "yarn",
   "path": {
