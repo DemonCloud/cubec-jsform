@@ -45,7 +45,7 @@ export default function createScope(
         this.__destory = this.self.render.call(this, errmsg === true ?  void 0 : errmsg);
     }.bind(createscope);
 
-    if(plugin.defaultValue)
+    if(plugin.defaultValue != null)
       defaultData[plugin.name] = plugin.defaultValue;
 
     createscope.required = !!plugin.required;
