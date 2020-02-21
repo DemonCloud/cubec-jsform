@@ -120,7 +120,10 @@ export default function createScope(
     });
 
     createscope.value = plugin.defaultValue;
-    createscope.setValue = function(value, isStatic){ core.formData.set(plugin.name, value, isStatic); };
+    createscope.setValue = function(value, isStatic){
+      core.formData.set(plugin.name, value, isStatic);
+      if(isStatic){ createscope.value = value; }
+    };
     createscope.triggerSubmit = function(){ jsform.submit.apply(jsform, arguments); };
     createscope.triggerReset = function(){ jsform.reset.apply(jsform, arguments); };
     createscope.subscribe = function(name, handler){
@@ -142,7 +145,9 @@ export default function createScope(
         }
       }
     };
-    createscope.forceRender = function(errmsg){ createscope.__destory = createscope.self.render.call(createscope, errmsg); };
+    createscope.forceRender = function(errmsg){
+      createscope.__destory = createscope.self.render.call(createscope, errmsg);
+    };
     createscope.getFormData = function(name){ return jsform.getData.apply(jsform, arguments); };
     createscope.getPlugin = function(name){
       if(_isString(name) && plugin.name != name)

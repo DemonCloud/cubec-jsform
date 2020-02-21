@@ -128,7 +128,7 @@ const plugin = {
   render(errmsg){
     // errmsg
     // this.root 挂在的dom节点
-    // this.setValue() 设置数值
+    // this.setValue(value, isStatic) 设置数值
     // this.triggerSubmit() 主动提交
     // this.triggerReset() 主动重置表单
     // this.getFormData() 获取当前form的所有数据

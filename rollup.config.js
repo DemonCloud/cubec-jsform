@@ -9,7 +9,7 @@ const autoExternal = require('rollup-plugin-auto-external');
 
 const path = require('path');
 const inputfile = path.resolve('./') + '/src/jsform/index.js';
-const outputfile = path.resolve('./') + '/dist/jsform.js';
+const outputfile = path.resolve('./') + '/dist/jsform.min.js';
 
 // 定义plugin
 const plugins = [

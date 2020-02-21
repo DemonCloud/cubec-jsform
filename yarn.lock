@@ -989,10 +989,10 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-cubec@^1.9.5:
-  version "1.9.5"
-  resolved "https://registry.yarnpkg.com/cubec/-/cubec-1.9.5.tgz#8875d8db0a59977949b34fdd0cdba7aac1f6b66e"
-  integrity sha512-b89Rg7GXXX0G/klWtXAB6Vmh1KMMgbRZVMMgXz3OMH3sx7XpLXTZ5dvISLvOc0mvqBe7Mrx0fEexYE4B0SJ4GQ==
+cubec@^1.9.6:
+  version "1.9.6"
+  resolved "https://registry.yarnpkg.com/cubec/-/cubec-1.9.6.tgz#80c4b3c5541df2c79e9e2aa46922fa77cb280d33"
+  integrity sha512-vcLx/RS45jxhfjGeKpa9lJ6cgZzLJStnLK7eoXNHc4jY1GtvN7Q0PB3FeYlrdxGaTFSiqGXKpou64H0gRreCfA==
 
 debug@2.6.9:
   version "2.6.9"
