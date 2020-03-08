@@ -4,6 +4,7 @@ import throttle from '../utils/throttle';
 
 const {
   _idt,
+  _isFn,
   _define,
   _eachArray,
   _eachObject,
@@ -21,6 +22,7 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
     if(config.store)
       scope.value = core.formData.get(plugin.name);
 
+    // 绑定赋值事件
     core.formData.on(`change:${plugin.name}`, function(value){
       scope.value = value;
 
@@ -35,7 +37,8 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
     });
 
     const scopeInit = function(){
-      getPlugin.init.call(scope);
+      if(scope.self.init && _isFn(scope.self.init))
+        scope.self.init.call(scope);
 
       _define(scope, "__init", {
         value: true,
@@ -44,11 +47,12 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
         configurable: false
       });
 
+      // console.log("插件初始化渲染", scope.name, scope.self);
+
       scope.__render();
 
       // remove scope minHeight;
-      if(scope.exposeMinHeight)
-        scope.root.style.minHeight = "";
+      if(scope.exposeMinHeight) scope.root.style.minHeight = "";
     };
 
     if((config.expose && plugin.expose !== false) || plugin.expose){

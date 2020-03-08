@@ -36,6 +36,7 @@ const createEvents = function(config, jsform){
   });
 
   _eachObject(config.events, (fn, event)=>Events.on(event, fn.bind(jsform)));
+
   delete config.events;
 
   return Events;

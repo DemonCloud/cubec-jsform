@@ -39,6 +39,12 @@ const createValidate = function(validate, value, formData, isRequired){
     _isString(validate[1])
   )
     errmsg = validate[0].test(value) ? true : validate[1];
+  else if(
+    _isArray(validate) &&
+    _isFn(validate[0]) &&
+    _isString(validate[1])
+  )
+    errmsg = validate[0](value) ? true : validate[1];
 
   return errmsg;
 };

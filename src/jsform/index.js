@@ -93,11 +93,13 @@ class JsForm {
       name: config.name,
       jsform: this,
       store: !!config.store,
-      data: createCore(this, JsFormPlugins),
       events: {
         change: data => events.emit(EVENTS.UPDATE, data),
       }
     });
+
+    // 静态设置默认值
+    core.formData.set(createCore(this, core.formData, JsFormPlugins), true);
 
     // mount jsForm
     root.appendChild(createBindInit(this, JsFormPlugins));
@@ -139,6 +141,8 @@ class JsForm {
         errfield.push({
           name: vname,
           value: formData[vname],
+          root: scope.root,
+          plugin: this.getPlugin(vname),
           errmsg
         });
       }
@@ -154,12 +158,14 @@ class JsForm {
           errfield.push({
             name: name,
             value: formData[name],
+            root: scope.root,
+            plugin: this.getPlugin(name),
             errmsg
           });
         }
 
         scope.__render(errmsg);
-      });
+      }, this);
     }
 
     if(!checker) events.emit(EVENTS.INVALID, [errfield]);
@@ -336,7 +342,7 @@ _eachArray([
 JsForm.getPluginList = ()=> JsFormPlugins.getPluginList();
 JsForm.registerPlugin = plugin => JsFormPlugins.registerPlugin(plugin);
 JsForm.collect = (use, connect=false) => cubec.atom({ use: _isString(use) ? [use] : (_isArrayLike(use) ? use : []), connect });
-JsForm.verison = "0.0.16";
+JsForm.verison = "0.0.17";
 JsForm.author = "YiJun";
 
 export default JsForm;

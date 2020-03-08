@@ -42,6 +42,9 @@ const part1View = cubec.view({
               name: "prename",
               className: "form-part-itemwrap prevname",
               required: true,
+              dynamic: ["name", function(name){
+                return name === "abc";
+              }],
               config: {
                 label: "曾用名",
                 placeholder: "请填写曾用名",
@@ -111,28 +114,28 @@ const part1View = cubec.view({
               }
             },
 
-            SelectPlugin({
-              name: "userId",
-              className: "form-part-itemwrap userId",
-              required: true,
-              config: {
-                label: "中介",
-                url: "/api/user",
-                dataParse(res){
-                  const options = res.content.map((user)=>({
-                    text: user.username,
-                    value: user.id
-                  }));
-                  return options;
-                }
-              }
-            }),
+            // SelectPlugin({
+            //   name: "userId",
+            //   className: "form-part-itemwrap userId",
+            //   required: true,
+            //   config: {
+            //     label: "中介",
+            //     url: "/api/user",
+            //     dataParse(res){
+            //       const options = res.content.map((user)=>({
+            //         text: user.username,
+            //         value: user.id
+            //       }));
+            //       return options;
+            //     }
+            //   }
+            // }),
           ]
         });
 
         this.jsform.onInValid(function(errors){
-          console.log(this);
 
+          console.log(errors);
           const err = errors[0];
           // const errPlugin = this.getPlugin(err.name);
           this.scrollTo(err.name);
