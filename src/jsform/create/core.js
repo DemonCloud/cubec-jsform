@@ -87,8 +87,8 @@ const createCore = function(jsform, formData, JsFormPlugins){
           dynamicScope.__render();
         // 不符合动态值需求时初始值将被还原
         else {
-          dynamicScope.value = plugin.defaultValue;
-          formData.set(plugin.name, plugin.defaultValue, true);
+          dynamicScope.value = void 0;
+          formData.set(plugin.name, void 0);
         }
       });
     }
