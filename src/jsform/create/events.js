@@ -19,6 +19,7 @@ const emitterErrorHandler = function(Events, formData){
 };
 
 const createEvents = function(config, jsform){
+  // console.log(config.events);
   const Events = cubec.model({
     name: `EVENT_MODEL_${config.name}`,
     source: _extend({}, config.events),

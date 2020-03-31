@@ -30,8 +30,10 @@ const initConfigChecker = function(config, JsFormPlugins){
     const names = {};
     let i = config.plugins.length;
     let tmp;
+
     for(; i--; ){
       tmp = config.plugins[i].name;
+
       if(names[tmp]){
         checker = false;
         console.error(`[JSFORM] [config error] {plugins} exist repetitive name plugin -> {${tmp}}`);

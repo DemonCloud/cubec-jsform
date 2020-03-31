@@ -207,7 +207,9 @@ class JsForm {
     // triggerRender
     core.triggerRender();
 
-    events.emit(EVENTS.RESET, _extend({},core.defaultData));
+    // console.log(events);
+
+    events.emit(EVENTS.RESET, _extend({}, core.defaultData));
 
     return this;
   }
@@ -342,7 +344,7 @@ _eachArray([
 JsForm.getPluginList = ()=> JsFormPlugins.getPluginList();
 JsForm.registerPlugin = plugin => JsFormPlugins.registerPlugin(plugin);
 JsForm.collect = (use, connect=false) => cubec.atom({ use: _isString(use) ? [use] : (_isArrayLike(use) ? use : []), connect });
-JsForm.verison = "0.0.17";
+JsForm.verison = "0.0.18";
 JsForm.author = "YiJun";
 
 export default JsForm;

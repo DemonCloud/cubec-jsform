@@ -39,6 +39,8 @@ const pluginDefaultOptions = {
 class JsFormPlugins {
   constructor(){
     this.plugins = {};
+
+    // console.log(this.plugins);
   }
 
   getPluginList(){
