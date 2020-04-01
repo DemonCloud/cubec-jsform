@@ -17,7 +17,6 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
 
   _eachObject(config.plugins, function(plugin){
     const scope = core.scope[plugin.name];
-    const getPlugin = JsFormPlugins.plugins[plugin.type];
 
     if(config.store)
       scope.value = core.formData.get(plugin.name);
@@ -37,8 +36,15 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
     });
 
     const scopeInit = function(){
-      if(scope.self.init && _isFn(scope.self.init))
-        scope.self.init.call(scope);
+      let initRender = true;
+
+      if(scope.self.init && _isFn(scope.self.init)){
+        const needInitRender = scope.self.init.call(scope);
+
+        const preventInitRender = ((needInitRender === false) || (needInitRender === null));
+
+        initRender = !preventInitRender;
+      }
 
       _define(scope, "__init", {
         value: true,
@@ -47,12 +53,11 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
         configurable: false
       });
 
-      // console.log("插件初始化渲染", scope.name, scope.self);
-
-      scope.__render();
-
+      if(initRender)
+        scope.__render();
       // remove scope minHeight;
-      if(scope.exposeMinHeight) scope.root.style.minHeight = "";
+      if(scope.exposeMinHeight)
+        scope.root.style.minHeight = "";
     };
 
     if((config.expose && plugin.expose !== false) || plugin.expose){
@@ -67,12 +72,15 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
       scopeInit();
     }
 
-    if(!scope.customRoot) core.root.appendChild(scope.root);
+    // 没有自定义根节点, 则jsForm自动帮助创建节点
+    if(!scope.customRoot)
+    	core.root.appendChild(scope.root);
   });
 
   // expose method
   if(core.pluginExpose.length){
     const handlerExpose = throttle(function(e){
+      // remove evnet when empty
       if(!core.pluginExpose.length){
         removeEventListener("resize", handlerExpose, false);
         removeEventListener("scroll", handlerExpose, false);
@@ -96,7 +104,6 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
     dispatchEvent(new Event("resize"));
   }
 
-  return core.root;
 };
 
 export default createBindJsFormInit;

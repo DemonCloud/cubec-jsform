@@ -22,6 +22,7 @@ const {
   _isArrayLike,
   _eachArray,
   _v8,
+  _size,
   _define,
   _eachObject,
   _fireEvent,
@@ -32,6 +33,7 @@ const {
 
 // define JsForm
 class JsForm {
+
   constructor(root, config={}){
     // checker config
     if(!_isDOM(root))
@@ -42,22 +44,20 @@ class JsForm {
     // checker config end
     config = _v8(_merge(defaultJsFormOptions, config));
 
-    // create jsForm root element
+    // create jsForm view root element
     const coreRoot = document.createElement("jsform");
     coreRoot.setAttribute("id", config.id);
     coreRoot.setAttribute("name", config.name);
-    coreRoot.setAttribute("namespace", Math.random().toString().replace(".",""));
-
     if(config.className) coreRoot.className = config.className;
 
     // create Event system
     const events = createEvents(config, this);
     // create JsForm Core
     const core = {
-      root: coreRoot,
+      root: root,
       pluginRoots: {},
       pluginExpose: [],
-      config: Object.freeze(config)
+      config: config
     };
 
     // create core & events getter
@@ -94,18 +94,80 @@ class JsForm {
       jsform: this,
       store: !!config.store,
       events: {
-        change: data => events.emit(EVENTS.UPDATE, data),
+        // initialize formData
+        init(){
+          // if model has stored
+          const defaultData = this.get();
+
+          // 收集初始化值 [defaultData]
+          _eachArray(config.plugins, function(plugin){
+            // 1. plugin exist define defaultValue
+            //      - storeData not exist data
+            //      - storeData exist data but plugin disabled [use store]
+            if(plugin.defaultValue != null &&
+              (defaultData[plugin.name] == null || plugin.store === false))
+              defaultData[plugin.name] = plugin.defaultValue;
+            // 2. plugin not use store
+            else if(defaultData[plugin.name] != null && plugin.store === false)
+              delete defaultData[plugin.name];
+          });
+
+          // fresh defaultData static
+          this.set(defaultData, true);
+        },
+
+        change(data){
+          events.emit(EVENTS.UPDATE, data);
+        },
       }
     });
 
-    // 静态设置默认值
-    core.formData.set(createCore(this, core.formData, JsFormPlugins), true);
+    // create formView
+    core.formView = cubec.view({
+      name: config.name,
+      jsform: this,
+      root: coreRoot,
+      render: _isString(config.render) ? config.render : "",
+      events: {
+        completeRender(defaultData){
+          // console.log(defaultData);
+          // auto use root with renderView ref
+          // if not exist customRoot with refs elements
+          if(_size(this.refs)){
+            // add root for each plugin
+            config.plugins = config.plugins.map((plugin)=>{
+              if(!plugin.root && this.refs[plugin.name])
+                plugin.root = this.refs[plugin.name];
+              return plugin;
+            });
+          }
 
-    // mount jsForm
-    root.appendChild(createBindInit(this, JsFormPlugins));
+          // create scope
+          createCore(
+            this.jsform,
+            core.formData,
+            JsFormPlugins
+          );
 
-    // trigger create event
-    events.emit(EVENTS.CREATE, core.formData.get());
+          // create init event
+          createBindInit(
+            this.jsform,
+            JsFormPlugins
+          );
+
+          // mount jsForm to Root (rendered)
+          root.appendChild(coreRoot);
+
+          // trigger [create] event
+          events.emit(EVENTS.CREATE, defaultData);
+        }
+      }
+    });
+
+    // async render
+    core.formView.render(
+      core.formData.get()
+    );
   }
 
   // getFormData
@@ -221,6 +283,13 @@ class JsForm {
     return this;
   }
 
+  syncStore(){
+    const core = this._core(_idt);
+    core.formData.syncStore();
+
+    return this;
+  }
+
   updatePlugin(name, options={}){
     const core = this._core(_idt);
     const events = this._events(_idt);
@@ -322,6 +391,7 @@ class JsForm {
   }
 }
 
+// registerEvents
 _eachArray([
   "onSubmit",
   "onInValid",
@@ -344,7 +414,7 @@ _eachArray([
 JsForm.getPluginList = ()=> JsFormPlugins.getPluginList();
 JsForm.registerPlugin = plugin => JsFormPlugins.registerPlugin(plugin);
 JsForm.collect = (use, connect=false) => cubec.atom({ use: _isString(use) ? [use] : (_isArrayLike(use) ? use : []), connect });
-JsForm.verison = "0.0.18";
+JsForm.verison = "0.0.2";
 JsForm.author = "YiJun";
 
 export default JsForm;

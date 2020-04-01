@@ -978,10 +978,10 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-cubec@^1.9.11:
-  version "1.9.11"
-  resolved "https://registry.yarnpkg.com/cubec/-/cubec-1.9.11.tgz#49cc669d18c33656abc874ecd6fa8b25df9d73de"
-  integrity sha512-q61UbpC2T33zCZqnm467iwxNuJksII4eYW9SBT4RQqStO2sObqel+aKfu0jzCn8LvmSDy6ivprd9KnazCbGQIg==
+cubec@^1.9.12:
+  version "1.9.12"
+  resolved "https://registry.yarnpkg.com/cubec/-/cubec-1.9.12.tgz#2d650a457ea511882711be7bf996389db5f56689"
+  integrity sha512-Zxs3lkWbdMuBwgKLDx9HReA0NcafwD7PdCx9B5Y4gFsSNvfukSyDE5UeUpibwG7kpetkZM9b8BULmysDu50V7A==
 
 debug@2.6.9:
   version "2.6.9"
@@ -1782,10 +1782,10 @@ rollup-pluginutils@^2.8.1:
   dependencies:
     estree-walker "^0.6.1"
 
-rollup@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.3.1.tgz#844c5cdf88d212ff7e59212088c37eacc521a2f9"
-  integrity sha512-BRjzOauORe+R0U0I6SkMTSG22nYmtztR/TaBl0SvbXgc3VAxBDrZoB6HROiK0S5px1pUBnLnjBkbzmVuwC9Q1Q==
+rollup@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.3.2.tgz#afa68e4f3325bcef4e150d082056bef450bcac60"
+  integrity sha512-p66+fbfaUUOGE84sHXAOgfeaYQMslgAazoQMp//nlR519R61213EPFgrMZa48j31jNacJwexSAR1Q8V/BwGKBA==
   optionalDependencies:
     fsevents "~2.1.2"
 

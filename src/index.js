@@ -23,7 +23,7 @@ const merge = struct.merge();
 const ajax = struct.ajax();
 
 const App = cubec.view({
-  forms: {
+  slot: {
     part1,
     part2,
     part3,
@@ -89,12 +89,12 @@ const App = cubec.view({
         <h3 class="form-logo_title">美国签证申请表</h3>
       </div>
 
-      <slot>forms.part1</slot>
-      <slot>forms.part2</slot>
-      <slot>forms.part3</slot>
-      <slot>forms.part4</slot>
-      <slot>forms.part5</slot>
-      <slot>forms.part6</slot>
+      <slot>part1</slot>
+      <slot>part2</slot>
+      <slot>part3</slot>
+      <slot>part4</slot>
+      <slot>part5</slot>
+      <slot>part6</slot>
 
       <div class="form-submit">
         <b class="form-submit-button submit">提交表单</b>

@@ -192,7 +192,7 @@ export default function createScope(
     createscope.getFormData = function(name){
       return jsform.getData.apply(jsform, arguments);
     };
-    createscope.getPlugin = function(name){
+    createscope.getFormPlugin = function(name){
       if(_isString(name) && plugin.name !== name)
         return jsform.getPlugin(name);
     };

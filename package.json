@@ -1,8 +1,8 @@
 {
   "name": "cubec-jsform",
-  "version": "0.0.18",
+  "version": "0.0.2",
   "description": "Cubec Part - [Cubec-JsForm] Integrated component-based static form solution",
-  "main": "dist/jsform.min.js",
+  "main": "src/jsform/index.js",
   "repository": "https://github.com/DemonCloud/cubec-jsform.git",
   "scripts": {
     "build": "node rollup.config.js"
@@ -11,7 +11,7 @@
   "license": "Apache License 2.0",
   "types": "index.d.ts",
   "dependencies": {
-    "cubec": "^1.9.11"
+    "cubec": "^1.9.13"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -27,7 +27,7 @@
     "normalize.css": "^8.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "rollup": "^2.3.1",
+    "rollup": "^2.3.2",
     "rollup-plugin-auto-external": "3.0.0-alpha.0",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.0.2",

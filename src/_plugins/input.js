@@ -47,7 +47,6 @@ export default JsForm.registerPlugin({
         }
       }
     });
-
   },
 
   render(errmsg){

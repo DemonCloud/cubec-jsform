@@ -34,17 +34,11 @@ const toggleDynamicScope = function(scope, plugin, validate, showOhide){
 
 // 创建scope
 const createCore = function(jsform, formData, JsFormPlugins){
-  const defaultData = {};
+  const defaultData = formData.get();
   const core = jsform._core(_idt);
   const scope = core.scope = {};
   const validate = core.validate = {};
   const config = core.config;
-
-  // 创建 初始化值 [defaultData]
-  _eachArray(config.plugins, function(plugin){
-    if(plugin.defaultValue != null)
-      defaultData[plugin.name] = plugin.defaultValue;
-  });
 
   // 创建 scope [核心]
   _eachArray(config.plugins, function(plugin){
@@ -58,12 +52,11 @@ const createCore = function(jsform, formData, JsFormPlugins){
       // 3. 数组 [prop, listen function], 监听一个属性, 自定义处理
       (_isArray(plugin.dynamic) && plugin.dynamic[0] && _isString(plugin.dynamic[0]) && _isFn(plugin.dynamic[1])));
 
-    // 非动态插件
+    // normal plugin
     if(!isDynamicPlugin)
       scope[plugin.name] = createScope(plugin, defaultData, validate, jsform, JsFormPlugins);
-    // 动态插件 dynamic
+    // dynamic plugin
     else{
-      // 动态插件
       // 仅需要判断值是否存在
       const useDynamicProps =
         _isString(plugin.dynamic) ? plugin.dynamic :

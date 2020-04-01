@@ -1,8 +1,7 @@
 const cool = function(e){ return e; };
 
 const defaultJsFormOptions = {
-  emulateJSON: true,
-  method: "POST",
+  render: "",
   events: {
     beforeSubmit: cool
   }
