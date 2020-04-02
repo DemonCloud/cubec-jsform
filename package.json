@@ -11,7 +11,7 @@
   "license": "Apache License 2.0",
   "types": "index.d.ts",
   "dependencies": {
-    "cubec": "^1.9.13"
+    "cubec": "^1.9.16"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

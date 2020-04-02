@@ -359,6 +359,7 @@ class JsForm {
 
     if(this.validate()){
       let formData = core.formData.get();
+
       formData = _fireEvent(events,"beforeSubmit",[formData]);
 
       events.emit(EVENTS.SUBMIT, formData);

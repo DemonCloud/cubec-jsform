@@ -978,10 +978,10 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-cubec@^1.9.12:
-  version "1.9.12"
-  resolved "https://registry.yarnpkg.com/cubec/-/cubec-1.9.12.tgz#2d650a457ea511882711be7bf996389db5f56689"
-  integrity sha512-Zxs3lkWbdMuBwgKLDx9HReA0NcafwD7PdCx9B5Y4gFsSNvfukSyDE5UeUpibwG7kpetkZM9b8BULmysDu50V7A==
+cubec@^1.9.16:
+  version "1.9.16"
+  resolved "https://registry.yarnpkg.com/cubec/-/cubec-1.9.16.tgz#068f4603e1a22fc35b07c5b6de6583d98176df17"
+  integrity sha512-w8YA/xrGrbGPMAqU5kWFB885V/C0E9PBc+bMI42hyfZrndUmCC8sUdvUXsPjMyWqX5c5rml0P7dU7Kifi/B9Og==
 
 debug@2.6.9:
   version "2.6.9"
