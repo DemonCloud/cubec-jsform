@@ -73,8 +73,7 @@ const createBindJsFormInit = function(jsform, JsFormPlugins){
     }
 
     // 没有自定义根节点, 则jsForm自动帮助创建节点
-    if(!scope.customRoot)
-    	core.root.appendChild(scope.root);
+    if(!scope.customRoot) core.coreRoot.appendChild(scope.root);
   });
 
   // expose method

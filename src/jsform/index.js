@@ -40,7 +40,6 @@ class JsForm {
       throw new Error("[JSFORM] 'root' param is not dom element");
     if(!_isObject(config) || !initConfigChecker(config, JsFormPlugins))
       throw new Error("[JSFORM] config param is invalid");
-
     // checker config end
     config = _v8(_merge(defaultJsFormOptions, config));
 
@@ -49,16 +48,18 @@ class JsForm {
     coreRoot.setAttribute("id", config.id);
     coreRoot.setAttribute("name", config.name);
     if(config.className) coreRoot.className = config.className;
-
     // create Event system
     const events = createEvents(config, this);
     // create JsForm Core
     const core = {
       root: root,
+      coreRoot,
       pluginRoots: {},
       pluginExpose: [],
       config: config
     };
+    // exist Custom render
+    const existCustomRender = !!(config.render && _isString(config.render));
 
     // create core & events getter
     _define(this, {
@@ -82,6 +83,12 @@ class JsForm {
       },
       _events: {
         value: idt => (idt === _idt ? events : {}),
+        writable: false,
+        enumerable: false,
+        configurable: false,
+      },
+      _existCustomRender: {
+        value: existCustomRender,
         writable: false,
         enumerable: false,
         configurable: false,
@@ -127,7 +134,7 @@ class JsForm {
       name: config.name,
       jsform: this,
       root: coreRoot,
-      render: _isString(config.render) ? config.render : "",
+      render: existCustomRender ? config.render : "",
       events: {
         completeRender(defaultData){
           // console.log(defaultData);
@@ -165,9 +172,7 @@ class JsForm {
     });
 
     // async render
-    core.formView.render(
-      core.formData.get()
-    );
+    core.formView.render(core.formData.get());
   }
 
   // getFormData
@@ -415,7 +420,7 @@ _eachArray([
 JsForm.getPluginList = ()=> JsFormPlugins.getPluginList();
 JsForm.registerPlugin = plugin => JsFormPlugins.registerPlugin(plugin);
 JsForm.collect = (use, connect=false) => cubec.atom({ use: _isString(use) ? [use] : (_isArrayLike(use) ? use : []), connect });
-JsForm.verison = "0.0.20";
+JsForm.verison = "0.0.22";
 JsForm.author = "YiJun";
 
 export default JsForm;
