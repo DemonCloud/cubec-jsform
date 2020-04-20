@@ -9,14 +9,6 @@ window.cubec = cubec;
 const part1View = cubec.view({
   name: "aucan-form-A-part1",
 
-  template: `
-    <div class="form-part">
-      <div className="form-part_title">基本信息</div>
-      <div className="form-part_description"></div>
-      <div className="form-part_items" ref='form'></div>
-    </div>
-  `,
-
   events: {
     completeRender(){
       if(!this.refs.form.init){
@@ -24,6 +16,7 @@ const part1View = cubec.view({
 
         window.p1 = this.jsform = new JsForm(this.refs.form, {
           id: "form-part-1",
+
           name: "A_form_part1",
 
           store: true,
@@ -145,7 +138,15 @@ const part1View = cubec.view({
 
       }
     }
-  }
+  },
+
+  render: `
+    <div class="form-part">
+      <div class="form-part_title">基本信息</div>
+      <div class="form-part_description"></div>
+      <div class="form-part_items" ref='form'></div>
+    </div>
+  `,
 
 });
 

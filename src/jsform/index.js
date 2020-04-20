@@ -38,8 +38,10 @@ class JsForm {
     // checker config
     if(!_isDOM(root))
       throw new Error("[JSFORM] 'root' param is not dom element");
+
     if(!_isObject(config) || !initConfigChecker(config, JsFormPlugins))
       throw new Error("[JSFORM] config param is invalid");
+
     // checker config end
     config = _v8(_merge(defaultJsFormOptions, config));
 
@@ -47,9 +49,13 @@ class JsForm {
     const coreRoot = document.createElement("jsform");
     coreRoot.setAttribute("id", config.id);
     coreRoot.setAttribute("name", config.name);
-    if(config.className) coreRoot.className = config.className;
+
+    if(config.className)
+      coreRoot.className = config.className;
+
     // create Event system
     const events = createEvents(config, this);
+
     // create JsForm Core
     const core = {
       root: root,
@@ -58,6 +64,7 @@ class JsForm {
       pluginExpose: [],
       config: config
     };
+
     // exist Custom render
     const existCustomRender = !!(config.render && _isString(config.render));
 
@@ -99,7 +106,7 @@ class JsForm {
     core.formData = cubec.model({
       name: config.name,
       jsform: this,
-      store: !!config.store,
+      plugin: config.store ? ['store'] : false,
       events: {
         // initialize formData
         init(){
@@ -420,7 +427,7 @@ _eachArray([
 JsForm.getPluginList = ()=> JsFormPlugins.getPluginList();
 JsForm.registerPlugin = plugin => JsFormPlugins.registerPlugin(plugin);
 JsForm.collect = (use, connect=false) => cubec.atom({ use: _isString(use) ? [use] : (_isArrayLike(use) ? use : []), connect });
-JsForm.verison = "0.0.22";
+JsForm.verison = "0.0.23";
 JsForm.author = "YiJun";
 
 export default JsForm;

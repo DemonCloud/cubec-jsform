@@ -11,36 +11,36 @@ import "./_plugins/react-input";
 import cubec from 'cubec';
 import struct from 'ax-struct-js';
 
-import part1 from './form/part1';
-import part2 from './form/part2';
-import part3 from './form/part3';
-import part4 from './form/part4';
-import part5 from './form/part5';
-import part6 from './form/part6';
+import parta from './form/part1';
+import partb from './form/part2';
+import partc from './form/part3';
+import partd from './form/part4';
+import parte from './form/part5';
+import partf from './form/part6';
 
 const every = struct.every();
 const merge = struct.merge();
 const ajax = struct.ajax();
 
 const App = cubec.view({
-  slot: {
-    part1,
-    part2,
-    part3,
-    part4,
-    part5,
-    part6
+  plugin: {
+    parta,
+    partb,
+    partc,
+    partd,
+    parte,
+    partf
   },
 
   events: {
     "click:.submit": function(){
       const forms = [
-        part1.jsform,
-        part2.jsform,
-        part3.jsform,
-        part4.jsform,
-        part5.jsform,
-        part6.jsform,
+        parta.jsform,
+        partb.jsform,
+        partc.jsform,
+        partd.jsform,
+        parte.jsform,
+        partf.jsform,
       ];
 
       const isValidate = every(forms.map((form)=>form.validate()), (e)=>(e===true));
@@ -89,12 +89,12 @@ const App = cubec.view({
         <h3 class="form-logo_title">美国签证申请表</h3>
       </div>
 
-      <slot>part1</slot>
-      <slot>part2</slot>
-      <slot>part3</slot>
-      <slot>part4</slot>
-      <slot>part5</slot>
-      <slot>part6</slot>
+      <parta></parta>
+      <partb></partb>
+      <partc></partc>
+      <partd></partd>
+      <parte></parte>
+      <partf></partf>
 
       <div class="form-submit">
         <b class="form-submit-button submit">提交表单</b>

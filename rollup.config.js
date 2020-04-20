@@ -70,10 +70,6 @@ const builder = async function() {
     format: 'umd',
     // external: 'cubec',
     name: 'JsForm',
-    onwarn(warning, warn) {
-      if (warning.code === 'THIS_IS_UNDEFINED') return;
-      warn(warning); // this requires Rollup 0.46
-    }
   });
 
   return bundle;
